@@ -1,3 +1,5 @@
+#include "audio.h"
+#include "notes.h"
 
 void ode_to_joy(void);
 void octave(void);

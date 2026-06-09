@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <songs.h>
 #include <stdbool.h>
-
+#include "timing.h"
+#include <stdint.h>
+#include "notes.h"
 
 double freq[NOTE_COUNT] = {
     // Octave 3
@@ -26,7 +28,7 @@ typedef struct {
     double frequency;
     double phase;
     float amplitude;
-    bool active;
+    uint64_t end_time;
 } Oscillator;
 
 Oscillator notes[NOTE_COUNT];
@@ -37,7 +39,7 @@ void init_notes(void)
         notes[i].phase = 0.0;
         notes[i].frequency = freq[i];
         notes[i].amplitude = 0.2f;
-        notes[i].active = false;
+        notes[i].end_time = 0;
     }
 }
 
@@ -49,7 +51,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
         int active_count = 0;
         float sample = 0.0f;
         for (int j = 0; j < NOTE_COUNT; j++) {
-            if (!notes[j].active)
+            if (!is_active(notes[j].end_time))
                 continue;
             sample += notes[j].amplitude *
                     sin(notes[j].phase);
@@ -70,6 +72,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
 SDL_AudioDeviceID audio_init()
 {
     init_notes();
+    set_bpm(120);
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         printf("SDL init failed\n");
@@ -98,13 +101,19 @@ void audio_terminate(SDL_AudioDeviceID device)
     SDL_Quit();
 }
 
-void playNote(Note note)
+void playNote(Note note, double duration)
 {
-    notes[note].active = true;
+    notes[note].end_time = add_time_note(notes[note].end_time, duration);
+}
+
+void playNoteMs(Note note, uint32_t duration_ms)
+{
+    notes[note].end_time = add_time_ms(notes[note].end_time, duration_ms);
 }
 
 int sound_temp(void)
 {
     d_dur_chord();
+    ode_to_joy();
     return 0;
 }
