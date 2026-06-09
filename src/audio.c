@@ -28,19 +28,9 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
     }
 }
 
-void sound_init()
+SDL_AudioDeviceID audio_init()
 {
-
-}
-
-void sound_terminate()
-{
-
-}
-
-int sound_temp(void)
-{
-        if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         printf("SDL init failed\n");
         return 0;
     }
@@ -58,6 +48,17 @@ int sound_temp(void)
     }
     SDL_PauseAudioDevice(device, 0);
 
+    return device;
+}
+
+void audio_terminate(SDL_AudioDeviceID device)
+{
+    SDL_CloseAudioDevice(device);
+    SDL_Quit();
+}
+
+int sound_temp(void)
+{
     printf("Playing 440 Hz. Press Enter to quit.\n");
     getchar();
     frequency = freq[D4];
@@ -66,9 +67,5 @@ int sound_temp(void)
     frequency = freq[E4];
     printf("Playing 440 Hz. Press Enter to quit.\n");
     getchar();
-
-        SDL_CloseAudioDevice(device);
-    SDL_Quit();
-
     return 0;
 }

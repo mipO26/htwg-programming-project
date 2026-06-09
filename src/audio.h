@@ -26,8 +26,8 @@ extern double frequency;
 void audio_callback(void *userdata, Uint8 *stream, int len);
 
 /* Sound system */
-void sound_init(void);
-void sound_terminate(void);
+SDL_AudioDeviceID audio_init();
+void audio_terminate(SDL_AudioDeviceID device);
 
 /* Test/demo function */
 int sound_temp(void);

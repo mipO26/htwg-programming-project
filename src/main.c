@@ -8,7 +8,9 @@
 
 int main(void)
 {
+    SDL_AudioDeviceID device = audio_init();
     sound_temp();
+    audio_terminate(device);
     char bassInput1;
     char bassInput2;
     char bassInput3;
