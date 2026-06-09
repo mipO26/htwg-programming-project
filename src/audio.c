@@ -113,7 +113,8 @@ void playNoteMs(Note note, uint32_t duration_ms)
 
 int sound_temp(void)
 {
-    d_dur_chord();
-    ode_to_joy();
+    // d_dur_chord();
+    // ode_to_joy();
+    hedwigs_theme();
     return 0;
 }
