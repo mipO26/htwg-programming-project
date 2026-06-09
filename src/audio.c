@@ -3,16 +3,22 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <songs.h>
 
-double freq[] = {
-    261.63,
-    293.66,
-    329.63,
-    349.23,
-    392.00,
-    440.00,
-    493.88
+double freq[NOTE_COUNT] = {
+    // Octave 3
+    130.81, 138.59, 146.83, 155.56, 164.81, 174.61,
+    185.00, 196.00, 207.65, 220.00, 233.08, 246.94,
+
+    // Octave 4
+    261.63, 277.18, 293.66, 311.13, 329.63, 349.23,
+    369.99, 392.00, 415.30, 440.00, 466.16, 493.88,
+
+    // Octave 5
+    523.25, 554.37, 587.33, 622.25, 659.25, 698.46,
+    739.99, 783.99, 830.61, 880.00, 932.33, 987.77
 };
+
 double phase = 0.0;
 double frequency = 261.63;
 
@@ -57,15 +63,13 @@ void audio_terminate(SDL_AudioDeviceID device)
     SDL_Quit();
 }
 
+void playNote(Note note)
+{
+    frequency = freq[note];
+}
+
 int sound_temp(void)
 {
-    printf("Playing 440 Hz. Press Enter to quit.\n");
-    getchar();
-    frequency = freq[D4];
-    printf("Playing 440 Hz. Press Enter to quit.\n");
-    getchar();
-    frequency = freq[E4];
-    printf("Playing 440 Hz. Press Enter to quit.\n");
-    getchar();
+    ode_to_joy();
     return 0;
 }
