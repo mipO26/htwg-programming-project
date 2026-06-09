@@ -3,10 +3,12 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include "audio.h"
 #define False 0
 
 int main(void)
 {
+    sound_temp();
     char bassInput1;
     char bassInput2;
     char bassInput3;
