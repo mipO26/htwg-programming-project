@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <songs.h>
+#include <stdbool.h>
+
 
 double freq[NOTE_COUNT] = {
     // Octave 3
@@ -19,23 +21,56 @@ double freq[NOTE_COUNT] = {
     739.99, 783.99, 830.61, 880.00, 932.33, 987.77
 };
 
-double phase = 0.0;
-double frequency = 261.63;
+
+typedef struct {
+    double frequency;
+    double phase;
+    float amplitude;
+    bool active;
+} Oscillator;
+
+Oscillator notes[NOTE_COUNT];
+
+void init_notes(void)
+{
+    for (int i = 0; i < NOTE_COUNT; i++) {
+        notes[i].phase = 0.0;
+        notes[i].frequency = freq[i];
+        notes[i].amplitude = 0.2f;
+        notes[i].active = false;
+    }
+}
 
 void audio_callback(void *userdata, Uint8 *stream, int len)
 {
     float *buffer = (float *)stream;
     int samples = len / sizeof(float);
     for (int i = 0; i < samples; i++) {
-        buffer[i] = 0.2f * sin(phase);
-        phase += 2.0 * M_PI * frequency / SAMPLE_RATE;
-        if (phase > 2.0 * M_PI)
-            phase -= 2.0 * M_PI;
+        int active_count = 0;
+        float sample = 0.0f;
+        for (int j = 0; j < NOTE_COUNT; j++) {
+            if (!notes[j].active)
+                continue;
+            sample += notes[j].amplitude *
+                    sin(notes[j].phase);
+            notes[j].phase +=
+                2.0 * M_PI *
+                notes[j].frequency /
+                SAMPLE_RATE;
+            if (notes[j].phase >= 2.0 * M_PI)
+                notes[j].phase -= 2.0 * M_PI;
+            active_count++;
+        }
+        if (active_count > 0)
+            sample /= active_count;
+        buffer[i] = sample;
     }
 }
 
 SDL_AudioDeviceID audio_init()
 {
+    init_notes();
+
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         printf("SDL init failed\n");
         return 0;
@@ -65,11 +100,11 @@ void audio_terminate(SDL_AudioDeviceID device)
 
 void playNote(Note note)
 {
-    frequency = freq[note];
+    notes[note].active = true;
 }
 
 int sound_temp(void)
 {
-    ode_to_joy();
+    d_dur_chord();
     return 0;
 }
