@@ -8,7 +8,7 @@ int main(void)
     sound_temp();
     audio_terminate(device);
 
-    keyboard();
+    // keyboard();
 
     return 0;
 }
