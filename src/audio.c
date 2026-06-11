@@ -8,6 +8,7 @@
 #include "timing.h"
 #include <stdint.h>
 #include "notes.h"
+#include "noteScheduler.h"
 
 double freq[NOTE_COUNT] = {
     // Octave 3
@@ -20,7 +21,10 @@ double freq[NOTE_COUNT] = {
 
     // Octave 5
     523.25, 554.37, 587.33, 622.25, 659.25, 698.46,
-    739.99, 783.99, 830.61, 880.00, 932.33, 987.77
+    739.99, 783.99, 830.61, 880.00, 932.33, 987.77,
+
+    // pause
+    0
 };
 
 
@@ -45,13 +49,14 @@ void init_notes(void)
 
 void audio_callback(void *userdata, Uint8 *stream, int len)
 {
+    runSchedulers();
     float *buffer = (float *)stream;
     int samples = len / sizeof(float);
     for (int i = 0; i < samples; i++) {
         int active_count = 0;
         float sample = 0.0f;
         for (int j = 0; j < NOTE_COUNT; j++) {
-            if (!is_active(notes[j].end_time))
+            if (!is_in_future(notes[j].end_time))
                 continue;
             sample += notes[j].amplitude *
                     sin(notes[j].phase);
@@ -72,6 +77,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
 SDL_AudioDeviceID audio_init()
 {
     init_notes();
+    initSchedulers();
     set_bpm(120);
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -114,7 +120,8 @@ void playNoteMs(Note note, uint32_t duration_ms)
 int sound_temp(void)
 {
     // d_dur_chord();
-    // ode_to_joy();
-    hedwigs_theme();
+    // octave();
+    ode_to_joy();
+    // hedwigs_theme();
     return 0;
 }

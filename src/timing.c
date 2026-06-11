@@ -31,7 +31,12 @@ uint64_t add_time_note(uint64_t time, double note_length)
     return time + (uint64_t)(time_unit * note_length);
 }
 
-bool is_active(uint64_t time)
+bool is_in_future(uint64_t time)
 {
     return time > now_us();
+}
+
+bool is_in_past(uint64_t time)
+{
+    return time <= now_us();
 }
