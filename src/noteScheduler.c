@@ -3,11 +3,13 @@
 #include "queue.h"
 #include "audio.h"
 
-Queue schedulers[3];
+#define SCHEDULER_COUNT 4
+
+Queue schedulers[SCHEDULER_COUNT];
 
 void initSchedulers()
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < SCHEDULER_COUNT; i++)
     {
         schedulers[i] = create_queue();
     }
@@ -40,7 +42,7 @@ ScheduledNote dequeueNote(int schedId)
 
 void runSchedulers()
 {
-    for (int i = 0; i< 3; i++)
+    for (int i = 0; i< SCHEDULER_COUNT; i++)
     {
         if (isNextNoteReady(i))
         {
