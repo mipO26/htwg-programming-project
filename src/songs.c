@@ -27,7 +27,7 @@ void ode_to_joy(void)
 {
     printf("Playing Ode to joy...");
 
-    // d_dur_chord();
+    d_dur_chord();
 
     enqueueNote(0, E4, QUARTER_NOTE);
     enqueueNote(0, E4, QUARTER_NOTE);
@@ -81,7 +81,6 @@ void hedwigs_theme(void)
     enqueueNote(0, As4, QUARTER_NOTE);
     enqueueNote(0, E4, WHOLE_NOTE);
 
-
     enqueueNote(0, A4, QUARTER_NOTE);
     enqueueNote(0, C5, QUARTER_NOTE);
     enqueueNote(0, B4, QUARTER_NOTE);
@@ -99,8 +98,6 @@ void hedwigs_theme(void)
     enqueueNote(0, A4, HALF_NOTE);
     enqueueNote(0, A4, HALF_NOTE);
     enqueueNote(0, C5, QUARTER_NOTE);
-
-
 
     getchar();
 }
