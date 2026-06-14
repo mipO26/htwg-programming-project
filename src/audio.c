@@ -42,8 +42,13 @@ void init_notes(void)
     for (int i = 0; i < NOTE_COUNT; i++) {
         notes[i].phase = 0.0;
         notes[i].frequency = freq[i];
-        notes[i].amplitude = 0.4f;
         notes[i].end_time = 0;
+        if (freq[i] < 200)
+            notes[i].amplitude = 0.30f;
+        else if (freq[i] < 400)
+            notes[i].amplitude = 0.22f;
+        else
+            notes[i].amplitude = 0.18f;
     }
 }
 
@@ -60,13 +65,13 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
                 continue;
             double p = notes[j].phase;
             float osc =
-                sin(p)
-                + 0.5f      * sin(2*p)
-                + (1.0f/3) * sin(3*p)
-                + 0.25f     * sin(4*p)
-                + 0.2f      * sin(5*p);
-            osc /= (1.0f + 0.5f + 1.0f/3 + 0.25f + 0.2f);
-            sample += notes[j].amplitude * osc;
+                1.0f  * sin(p * 1.004)
+                + 0.7f  * sin(2*p * 1.001)
+                + 0.4f  * sin(3*p * 1.005)
+                + 0.2f  * sin(4*p * 1.002)
+                + 0.1f  * sin(5*p * 1.006);
+            osc /= 2.4f;
+            sample += notes[j].amplitude * osc  * 1.002;
             notes[j].phase +=
                 2.0 * M_PI *
                 notes[j].frequency /
@@ -78,7 +83,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
         if (active_count > 0)
             sample /= sqrtf(active_count);
             // sample /= active_count;
-        buffer[i] = sample;
+        buffer[i] = tanhf(sample);;
     }
 }
 
