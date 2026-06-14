@@ -101,3 +101,12 @@ void hedwigs_theme(void)
 
     getchar();
 }
+
+int play_song(void)
+{
+    // d_dur_chord();
+    // octave();
+    // ode_to_joy();
+    hedwigs_theme();
+    return 0;
+}

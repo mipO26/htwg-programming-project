@@ -130,11 +130,7 @@ void playNoteMs(Note note, uint32_t duration_ms)
     notes[note].end_time = add_time_ms(notes[note].end_time, duration_ms);
 }
 
-int sound_temp(void)
+void stopNote(Note note)
 {
-    // d_dur_chord();
-    // octave();
-    ode_to_joy();
-    // hedwigs_theme();
-    return 0;
+    notes[note].end_time = 0;
 }
