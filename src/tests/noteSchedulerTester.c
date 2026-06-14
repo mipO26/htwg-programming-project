@@ -1,8 +1,7 @@
-#include "noteScheduler.h"
+#include "audio/noteScheduler.h"
 #include <assert.h>
-#include "notes.h"
-#include "noteScheduler.h"
-#include "timing.h"
+#include "audio/notes.h"
+#include "audio/timing.h"
 #include <stdio.h>
 #include <time.h>
 

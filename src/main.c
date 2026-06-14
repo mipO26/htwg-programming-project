@@ -1,19 +1,25 @@
-#include "audio.h"
+#include "audio/audio.h"
 #include "keyboard.h"
-#include "tests/noteSchedulerTester.h"
-#include "songs.h"
+#include "audio/songs.h"
 #define False 0
 
 int main(void)
 {
-    // tests
-    // noteSchedulerTester();
 
+    /*==================================================
+    * INITIALIZATION
+    *==================================================*/
     SDL_AudioDeviceID device = audio_init();
-    play_song();
-    audio_terminate(device);
 
-    // keyboard();
+    /*==================================================
+    * APP
+    *==================================================*/
+    play_song();
+
+    /*==================================================
+    * TERMINATION
+    *==================================================*/
+    audio_terminate(device);
 
     return 0;
 }
