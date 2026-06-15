@@ -1,11 +1,6 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
-#define False 0
+#include "keyboard.h"
 
-int main(void)
+void keyboard(void)
 {
     char bassInput1;
     char bassInput2;
@@ -99,6 +94,4 @@ int main(void)
         printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", bassNote1, bassNote2, bassNote3);
         scanf(" %c", &yesNo);
     } while (yesNo != 'y');
-
-    return 0;
 }
