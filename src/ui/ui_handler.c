@@ -2,5 +2,5 @@
 #include <stdio.h>
 
 void ui(){
-    printf("hello");
+    printf("heljkjklo");
 }
