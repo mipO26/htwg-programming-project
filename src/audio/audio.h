@@ -1,6 +1,7 @@
 #ifndef SOUND_H
 #define SOUND_H
 
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <stdbool.h>
 #include "notes.h"

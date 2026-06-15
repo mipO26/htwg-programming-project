@@ -1,6 +1,8 @@
 #include "audio/audio.h"
 #include "keyboard.h"
 #include "audio/songs.h"
+#include "ui/ui_handler.h"
+
 #define False 0
 
 int main(void)
@@ -14,6 +16,7 @@ int main(void)
     /*==================================================
     * APP
     *==================================================*/
+    //ui();
     play_song();
 
     /*==================================================

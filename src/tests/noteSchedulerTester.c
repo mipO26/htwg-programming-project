@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 
-void sleep()
+/*void sleep()
 {
     struct timespec ts;
     ts.tv_sec = 1;
@@ -32,3 +32,6 @@ void noteSchedulerTester()
 
     assert(isNextNoteReady(0) == false);
 }
+
+/*void sleep()
+*/

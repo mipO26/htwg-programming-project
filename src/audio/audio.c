@@ -89,6 +89,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
 
 SDL_AudioDeviceID audio_init()
 {
+    SDL_SetMainReady();
     init_notes();
     initSchedulers();
     set_bpm(120);
