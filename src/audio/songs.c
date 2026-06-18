@@ -1,13 +1,6 @@
 #include "songs.h"
 #include "noteScheduler.h"
-
-void d_dur_chord(void)
-{
-    printf("Playing D minor chord...");
-    enqueueNote(1, D3, WHOLE_NOTE);
-    enqueueNote(2, F3, WHOLE_NOTE);
-    enqueueNote(3, A3, WHOLE_NOTE);
-}
+#include "chords.h"
 
 void octave(void)
 {
