@@ -1,4 +1,6 @@
 #include "keyboard.h"
+#include "audio/audio.h"
+#include "audio/notes.h"
 
 void keyboard(void)
 {
@@ -20,78 +22,86 @@ void keyboard(void)
         scanf(" %c", &bassInput3);
 
         switch (bassInput1) {
-        case 'q': strcpy(bassNote1, "c"); break;
-        case 'w': strcpy(bassNote1, "c#"); break;
-        case 'e': strcpy(bassNote1, "d"); break;
-        case 'r': strcpy(bassNote1, "d#"); break;
-        case 't': strcpy(bassNote1, "e"); break;
-        case 'y': strcpy(bassNote1, "f"); break;
-        case 'u': strcpy(bassNote1, "f#"); break;
-        case 'i': strcpy(bassNote1, "g"); break;
-        case 'o': strcpy(bassNote1, "g#"); break;
-        case 'p': strcpy(bassNote1, "a"); break;
-        case 'a': strcpy(bassNote1, "a#"); break;
-        case 's': strcpy(bassNote1, "b"); break;
-        case 'd': strcpy(bassNote1, "c^"); break;
-        case 'f': strcpy(bassNote1, "c#^"); break;
-        case 'g': strcpy(bassNote1, "d^"); break;
-        case 'h': strcpy(bassNote1, "d#^"); break;
-        case 'j': strcpy(bassNote1, "e^"); break;
-        case 'k': strcpy(bassNote1, "e#^"); break;
-        case 'l': strcpy(bassNote1, "f^"); break;
-        case 'z': strcpy(bassNote1, "f#^"); break;
-        default: strcpy(bassNote1, "?"); break;
+        case 'q': playNote(C4, WHOLE_NOTE); break;
+        case 'w': playNote(Cs4, WHOLE_NOTE); break;
+        case 'e': playNote(D4, WHOLE_NOTE); break;
+        case 'r': playNote(Ds4, WHOLE_NOTE); break;
+        case 't': playNote(E4, WHOLE_NOTE); break;
+        case 'y': playNote(F4, WHOLE_NOTE); break;
+        case 'u': playNote(Fs4, WHOLE_NOTE); break;
+        case 'i': playNote(G4, WHOLE_NOTE); break;
+        case 'o': playNote(Gs4, WHOLE_NOTE); break;
+        case 'p': playNote(A4, WHOLE_NOTE); break;
+        case 'a': playNote(As4, WHOLE_NOTE); break;
+        case 's': playNote(B4, WHOLE_NOTE); break;
+        case 'd': playNote(C5, WHOLE_NOTE); break;
+        case 'f': playNote(Cs5, WHOLE_NOTE); break;
+        case 'g': playNote(D5, WHOLE_NOTE); break;
+        case 'h': playNote(Ds5, WHOLE_NOTE); break;
+        case 'j': playNote(E5, WHOLE_NOTE); break;
+        case 'k': playNote(F5, WHOLE_NOTE); break;
+        case 'l': playNote(Fs5, WHOLE_NOTE); break;
+        case 'z': playNote(G5, WHOLE_NOTE); break;
+        default: playNote(C3, WHOLE_NOTE); break;
         }
 
         switch (bassInput2) {
-        case 'q': strcpy(bassNote2, "c"); break;
-        case 'w': strcpy(bassNote2, "c#"); break;
-        case 'e': strcpy(bassNote2, "d"); break;
-        case 'r': strcpy(bassNote2, "d#"); break;
-        case 't': strcpy(bassNote2, "e"); break;
-        case 'y': strcpy(bassNote2, "f"); break;
-        case 'u': strcpy(bassNote2, "f#"); break;
-        case 'i': strcpy(bassNote2, "g"); break;
-        case 'o': strcpy(bassNote2, "g#"); break;
-        case 'p': strcpy(bassNote2, "a"); break;
-        case 'a': strcpy(bassNote2, "a#"); break;
-        case 's': strcpy(bassNote2, "b"); break;
-        case 'd': strcpy(bassNote2, "c^"); break;
-        case 'f': strcpy(bassNote2, "c#^"); break;
-        case 'g': strcpy(bassNote2, "d^"); break;
-        case 'h': strcpy(bassNote2, "d#^"); break;
-        case 'j': strcpy(bassNote2, "e^"); break;
-        case 'k': strcpy(bassNote2, "e#^"); break;
-        case 'l': strcpy(bassNote2, "f^"); break;
-        case 'z': strcpy(bassNote2, "f#^"); break;
-        default: strcpy(bassNote2, "?"); break;
+        case 'q': playNote(C4, WHOLE_NOTE); break;
+        case 'w': playNote(Cs4, WHOLE_NOTE); break;
+        case 'e': playNote(D4, WHOLE_NOTE); break;
+        case 'r': playNote(Ds4, WHOLE_NOTE); break;
+        case 't': playNote(E4, WHOLE_NOTE); break;
+        case 'y': playNote(F4, WHOLE_NOTE); break;
+        case 'u': playNote(Fs4, WHOLE_NOTE); break;
+        case 'i': playNote(G4, WHOLE_NOTE); break;
+        case 'o': playNote(Gs4, WHOLE_NOTE); break;
+        case 'p': playNote(A4, WHOLE_NOTE); break;
+        case 'a': playNote(As4, WHOLE_NOTE); break;
+        case 's': playNote(B4, WHOLE_NOTE); break;
+        case 'd': playNote(C5, WHOLE_NOTE); break;
+        case 'f': playNote(Cs5, WHOLE_NOTE); break;
+        case 'g': playNote(D5, WHOLE_NOTE); break;
+        case 'h': playNote(Ds5, WHOLE_NOTE); break;
+        case 'j': playNote(E5, WHOLE_NOTE); break;
+        case 'k': playNote(F5, WHOLE_NOTE); break;
+        case 'l': playNote(Fs5, WHOLE_NOTE); break;
+        case 'z': playNote(G5, WHOLE_NOTE); break;
+        default: playNote(C3, WHOLE_NOTE); break;
         }
 
         switch (bassInput3) {
-        case 'q': strcpy(bassNote3, "c"); break;
-        case 'w': strcpy(bassNote3, "c#"); break;
-        case 'e': strcpy(bassNote3, "d"); break;
-        case 'r': strcpy(bassNote3, "d#"); break;
-        case 't': strcpy(bassNote3, "e"); break;
-        case 'y': strcpy(bassNote3, "f"); break;
-        case 'u': strcpy(bassNote3, "f#"); break;
-        case 'i': strcpy(bassNote3, "g"); break;
-        case 'o': strcpy(bassNote3, "g#"); break;
-        case 'p': strcpy(bassNote3, "a"); break;
-        case 'a': strcpy(bassNote3, "a#"); break;
-        case 's': strcpy(bassNote3, "b"); break;
-        case 'd': strcpy(bassNote3, "c^"); break;
-        case 'f': strcpy(bassNote3, "c#^"); break;
-        case 'g': strcpy(bassNote3, "d^"); break;
-        case 'h': strcpy(bassNote3, "d#^"); break;
-        case 'j': strcpy(bassNote3, "e^"); break;
-        case 'k': strcpy(bassNote3, "e#^"); break;
-        case 'l': strcpy(bassNote3, "f^"); break;
-        case 'z': strcpy(bassNote3, "f#^"); break;
-        default: strcpy(bassNote3, "?"); break;
+       case 'q': playNote(C4, WHOLE_NOTE); break;
+        case 'w': playNote(Cs4, WHOLE_NOTE); break;
+        case 'e': playNote(D4, WHOLE_NOTE); break;
+        case 'r': playNote(Ds4, WHOLE_NOTE); break;
+        case 't': playNote(E4, WHOLE_NOTE); break;
+        case 'y': playNote(F4, WHOLE_NOTE); break;
+        case 'u': playNote(Fs4, WHOLE_NOTE); break;
+        case 'i': playNote(G4, WHOLE_NOTE); break;
+        case 'o': playNote(Gs4, WHOLE_NOTE); break;
+        case 'p': playNote(A4, WHOLE_NOTE); break;
+        case 'a': playNote(As4, WHOLE_NOTE); break;
+        case 's': playNote(B4, WHOLE_NOTE); break;
+        case 'd': playNote(C5, WHOLE_NOTE); break;
+        case 'f': playNote(Cs5, WHOLE_NOTE); break;
+        case 'g': playNote(D5, WHOLE_NOTE); break;
+        case 'h': playNote(Ds5, WHOLE_NOTE); break;
+        case 'j': playNote(E5, WHOLE_NOTE); break;
+        case 'k': playNote(F5, WHOLE_NOTE); break;
+        case 'l': playNote(Fs5, WHOLE_NOTE); break;
+        case 'z': playNote(G5, WHOLE_NOTE); break;
+        default: playNote(C3, WHOLE_NOTE); break;
         }
 
-        printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", bassNote1, bassNote2, bassNote3);
+        if (bassInput1==bassInput2 || bassInput1==bassInput3 || bassInput2==bassInput3) {
+            printf("You have entered duplicate notes. Please enter different notes.\n");
+            char yesNo = 'n';
+        } else if (bassInput1 == bassInput2 && bassInput2 == bassInput3) {
+            printf("You have entered the same notes three times.\n");
+            char yesNo = 'n';
+        } else if (bassInput1 != bassInput2 && bassInput1 != bassInput3 && bassInput2 != bassInput3) {
+            printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", bassNote1, bassNote2, bassNote3);
         scanf(" %c", &yesNo);
-    } while (yesNo != 'y');
+        }
+    } while (yesNo != 'y'); //cmake --build build && ./build/Musicify to run program
 }
