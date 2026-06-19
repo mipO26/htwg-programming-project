@@ -22,3 +22,8 @@ typedef struct ScheduledNote {
 #define SIXTEENTH_NOTE 0.25
 #define THIRTY_SECOND_NOTE 0.125
 #define SIXTY_FOURTH_NOTE 0.0625
+
+#define DOTTED_HALF_NOTE      3.0
+#define DOTTED_QUARTER_NOTE   1.5
+#define DOTTED_EIGHTH_NOTE    0.75
+#define DOTTED_SIXTEENTH_NOTE 0.375

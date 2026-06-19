@@ -20,39 +20,59 @@ void ode_to_joy(void)
 {
     printf("Playing Ode to joy...");
 
-    // d_dur_chord();
+    enqueueNote(0, G3, HALF_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+    enqueueNote(0, A3, HALF_NOTE);
+    enqueueNote(1, F4, QUARTER_NOTE);
+    enqueueNote(1, G4, QUARTER_NOTE);
 
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, F4, QUARTER_NOTE);
-    enqueueNote(0, G4, QUARTER_NOTE);
-    enqueueNote(0, G4, QUARTER_NOTE);
-    enqueueNote(0, F4, QUARTER_NOTE);
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, D4, QUARTER_NOTE);
-    enqueueNote(0, C4, QUARTER_NOTE);
-    enqueueNote(0, C4, QUARTER_NOTE);
-    enqueueNote(0, D4, QUARTER_NOTE);
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, D4, QUARTER_NOTE);
-    enqueueNote(0, D4, HALF_NOTE);
+    enqueueNote(0, B3, HALF_NOTE);
+    enqueueNote(1, G4, QUARTER_NOTE);
+    enqueueNote(1, F4, QUARTER_NOTE);
+    enqueueNote(0, G3, HALF_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+    enqueueNote(1, D4, QUARTER_NOTE);
 
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, F4, QUARTER_NOTE);
-    enqueueNote(0, G4, QUARTER_NOTE);
-    enqueueNote(0, G4, QUARTER_NOTE);
-    enqueueNote(0, F4, QUARTER_NOTE);
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, D4, QUARTER_NOTE);
-    enqueueNote(0, C4, QUARTER_NOTE);
-    enqueueNote(0, C4, QUARTER_NOTE);
-    enqueueNote(0, D4, QUARTER_NOTE);
-    enqueueNote(0, E4, QUARTER_NOTE);
-    enqueueNote(0, D4, QUARTER_NOTE);
-    enqueueNote(0, C4, QUARTER_NOTE);
-    enqueueNote(0, C4, HALF_NOTE);
+    enqueueNote(0, E3, HALF_NOTE);
+    enqueueNote(1, C4, QUARTER_NOTE);
+    enqueueNote(1, C4, QUARTER_NOTE);
+    enqueueNote(0, F3, HALF_NOTE);
+    enqueueNote(1, D4, QUARTER_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+
+    enqueueNote(0, G3, HALF_NOTE);
+    enqueueNote(1, E4, DOTTED_QUARTER_NOTE);
+    enqueueNote(0, F3, HALF_NOTE);
+    enqueueNote(1, D4, EIGHTH_NOTE);
+    enqueueNote(1, D4, HALF_NOTE);
+
+    enqueueNote(0, G3, HALF_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+    enqueueNote(0, A3, HALF_NOTE);
+    enqueueNote(1, F4, QUARTER_NOTE);
+    enqueueNote(1, G4, QUARTER_NOTE);
+
+    enqueueNote(0, B3, HALF_NOTE);
+    enqueueNote(0, G3, HALF_NOTE);
+    enqueueNote(1, G4, QUARTER_NOTE);
+    enqueueNote(1, F4, QUARTER_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+    enqueueNote(1, D4, QUARTER_NOTE);
+
+    enqueueNote(0, E3, HALF_NOTE);
+    enqueueNote(0, D3, HALF_NOTE);
+    enqueueNote(1, C4, QUARTER_NOTE);
+    enqueueNote(1, C4, QUARTER_NOTE);
+    enqueueNote(1, D4, QUARTER_NOTE);
+    enqueueNote(1, E4, QUARTER_NOTE);
+
+    enqueueNote(0, G3, HALF_NOTE);
+    enqueueNote(0, E3, HALF_NOTE);
+    enqueueNote(1, D4, DOTTED_QUARTER_NOTE);
+    enqueueNote(1, C4, EIGHTH_NOTE);
+    enqueueNote(1, C4, HALF_NOTE);
     getchar(); 
 }
 
