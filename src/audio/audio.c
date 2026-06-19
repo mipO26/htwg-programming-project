@@ -62,6 +62,19 @@ float envelope(Oscillator note)
          + 0.5f * expf(-0.8f * t);
 }
 
+float hammer(Oscillator note)
+{
+    uint64_t t = time_from_start(note.start_time);
+    float ham = 0.0f;
+    if (t < 0.01f)
+    {
+        ham = ((float)rand()/RAND_MAX*2.0f-1.0f)
+                * expf(-300*t)
+                * 0.15f;
+    }
+    return ham;
+}
+
 void audio_callback(void *userdata, Uint8 *stream, int len)
 {
     runSchedulers();
@@ -87,7 +100,8 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
                 + 0.12f * expf(-1.4*t) * sin(5.009*p);
             osc /= 2.52f;
             float env = envelope(notes[j]);
-            sample += notes[j].amplitude * osc  * 1.002 * env;
+            float ham = hammer(notes[j]);
+            sample += notes[j].amplitude * (ham + osc)  * 1.002 * env;
             notes[j].phase +=
                 2.0 * M_PI *
                 notes[j].frequency /
