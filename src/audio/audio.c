@@ -32,6 +32,7 @@ typedef struct {
     double frequency;
     double phase;
     float amplitude;
+    uint64_t start_time;
     uint64_t end_time;
 } Oscillator;
 
@@ -52,11 +53,24 @@ void init_notes(void)
     }
 }
 
+float envelope(Oscillator note)
+{
+    float t = time_from_start(note.start_time) * 1e-6f;
+    if (t < 0.005f)
+        return t / 0.005f;
+    return 0.5f * expf(-3.0f * t)
+         + 0.5f * expf(-0.8f * t);
+}
+
 void audio_callback(void *userdata, Uint8 *stream, int len)
 {
     runSchedulers();
+
+    // samples are represented as floats
     float *buffer = (float *)stream;
     int samples = len / sizeof(float);
+
+    // collect samples
     for (int i = 0; i < samples; i++) {
         int active_count = 0;
         float sample = 0.0f;
@@ -64,14 +78,16 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
             if (!is_in_future(notes[j].end_time))
                 continue;
             double p = notes[j].phase;
+            float t = time_from_start(notes[j].start_time) * 1e-6f;
             float osc =
-                1.0f  * sin(p * 1.004)
-                + 0.7f  * sin(2*p * 1.001)
-                + 0.4f  * sin(3*p * 1.005)
-                + 0.2f  * sin(4*p * 1.002)
-                + 0.1f  * sin(5*p * 1.006);
-            osc /= 2.4f;
-            sample += notes[j].amplitude * osc  * 1.002;
+                1.0f * sin(p)
+                + 0.7f * expf(-0.4*t) * sin(2.002*p)
+                + 0.45f * expf(-0.8*t) * sin(3.004*p)
+                + 0.25f * expf(-1.2*t) * sin(4.006*p)
+                + 0.12f * expf(-1.4*t) * sin(5.009*p);
+            osc /= 2.52f;
+            float env = envelope(notes[j]);
+            sample += notes[j].amplitude * osc  * 1.002 * env;
             notes[j].phase +=
                 2.0 * M_PI *
                 notes[j].frequency /
@@ -91,7 +107,7 @@ SDL_AudioDeviceID audio_init()
 {
     init_notes();
     initSchedulers();
-    set_bpm(120);
+    set_bpm(100);
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         printf("SDL init failed\n");
@@ -99,7 +115,7 @@ SDL_AudioDeviceID audio_init()
     }
     SDL_AudioSpec spec = {0};
     spec.freq = SAMPLE_RATE;
-    spec.format = AUDIO_F32SYS;
+    spec.format = AUDIO_F32SYS; // audio samples will be 32-bit floating point
     spec.channels = 1;
     spec.samples = 1024;
     spec.callback = audio_callback;
@@ -122,7 +138,8 @@ void audio_terminate(SDL_AudioDeviceID device)
 
 void playNote(Note note, double duration)
 {
-    notes[note].end_time = add_time_note(notes[note].end_time, duration);
+    notes[note].start_time = now_us();
+    notes[note].end_time = add_time_note(0, duration);
 }
 
 void playNoteMs(Note note, uint32_t duration_ms)
