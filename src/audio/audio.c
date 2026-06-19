@@ -10,6 +10,12 @@
 #include "notes.h"
 #include "noteScheduler.h"
 
+#define DELAY_MS 70
+#define DELAY_SAMPLES (SAMPLE_RATE * DELAY_MS / 1000)
+
+static float delay_buffer[DELAY_SAMPLES];
+static int delay_pos = 0;
+
 double freq[NOTE_COUNT] = {
     // Octave 3
     130.81, 138.59, 146.83, 155.56, 164.81, 174.61,
@@ -94,10 +100,10 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
             float t = time_from_start(notes[j].start_time) * 1e-6f;
             float osc =
                 1.0f * sin(p)
-                + 0.7f * expf(-0.4*t) * sin(2.002*p)
-                + 0.45f * expf(-0.8*t) * sin(3.004*p)
-                + 0.25f * expf(-1.2*t) * sin(4.006*p)
-                + 0.12f * expf(-1.4*t) * sin(5.009*p);
+                + 0.7f * expf(-0.5*t) * sin(2.0002*p)
+                + 0.45f * expf(-1.2*t) * sin(3.0004*p)
+                + 0.25f * expf(-1.9*t) * sin(4.0006*p)
+                + 0.12f * expf(-2.4*t) * sin(5.0009*p);
             osc /= 2.52f;
             float env = envelope(notes[j]);
             float ham = hammer(notes[j]);
@@ -112,8 +118,21 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
         }
         if (active_count > 0)
             sample /= sqrtf(active_count);
-            // sample /= active_count;
-        buffer[i] = tanhf(sample);;
+        
+        float delayed = delay_buffer[delay_pos];
+
+        float out = sample
+                + 0.50f * delayed;
+
+        delay_buffer[delay_pos] =
+            sample
+            + 0.65f * delayed;
+
+        delay_pos++;
+        if (delay_pos >= DELAY_SAMPLES)
+            delay_pos = 0;
+
+        buffer[i] = tanhf(out);
     }
 }
 
