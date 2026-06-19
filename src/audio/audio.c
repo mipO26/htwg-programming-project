@@ -9,8 +9,8 @@
 #include <stdint.h>
 #include "notes.h"
 #include "noteScheduler.h"
+#include "audioConfig.h"
 
-#define DELAY_MS 70
 #define DELAY_SAMPLES (SAMPLE_RATE * DELAY_MS / 1000)
 
 static float delay_buffer[DELAY_SAMPLES];
@@ -83,24 +83,50 @@ void init_notes(void)
 
 float envelope(Oscillator note)
 {
+    if (!ENABLE_ENVELOPE)
+        return 1;
     float t = time_from_start(note.start_time) * 1e-6f;
     if (t < 0.005f)
         return t / 0.005f;
-    return 0.5f * expf(-3.0f * t)
-         + 0.5f * expf(-0.8f * t);
+    return 0.5f * expf(-1.5f * t) + 0.5f * expf(-0.8f * t) + 0.4f * expf(-0.6f * t)  + 0.2f * expf(-0.3f * t) + 0.1f * expf(-0.1f * t);
 }
 
 float hammer(Oscillator note)
 {
     uint64_t t = time_from_start(note.start_time);
     float ham = 0.0f;
-    if (t < 0.01f)
+    if (t < 0.0008f)
     {
         ham = ((float)rand()/RAND_MAX*2.0f-1.0f)
                 * expf(-300*t)
                 * 0.15f;
     }
     return ham;
+}
+
+float get_expf(float x)
+{
+    if (ENABLE_DELAY)
+    {
+        return expf(x);
+    }
+    return 1;
+}
+
+float get_osc(float p, float t)
+{
+    float osc = 1.0f * sin(p);
+    
+    if (ENABLE_HARMONIES)
+    {
+        osc = osc
+        + 0.7f * get_expf(-0.5*t) * sin(2.0002*p)
+        + 0.45f * get_expf(-1.2*t) * sin(3.0004*p)
+        + 0.25f * get_expf(-1.9*t) * sin(4.0006*p)
+        + 0.12f * get_expf(-2.4*t) * sin(5.0009*p);
+        osc /= 2.52f;
+    }
+    return osc;
 }
 
 void audio_callback(void *userdata, Uint8 *stream, int len)
@@ -120,13 +146,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
                 continue;
             double p = notes[j].phase;
             float t = time_from_start(notes[j].start_time) * 1e-6f;
-            float osc =
-                1.0f * sin(p)
-                + 0.7f * expf(-0.5*t) * sin(2.0002*p)
-                + 0.45f * expf(-1.2*t) * sin(3.0004*p)
-                + 0.25f * expf(-1.9*t) * sin(4.0006*p)
-                + 0.12f * expf(-2.4*t) * sin(5.0009*p);
-            osc /= 2.52f;
+            float osc = get_osc(p, t);
             float env = envelope(notes[j]);
             float ham = hammer(notes[j]);
             sample += notes[j].amplitude * (ham + osc)  * 1.002 * env;
@@ -141,20 +161,27 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
         if (active_count > 0)
             sample /= sqrtf(active_count);
         
-        float delayed = delay_buffer[delay_pos];
+        if (ENABLE_DELAY)
+        {
+            float delayed = delay_buffer[delay_pos];
 
-        float out = sample
-                + 0.50f * delayed;
+            float out = sample
+                    + 0.50f * delayed;
 
-        delay_buffer[delay_pos] =
-            sample
-            + 0.65f * delayed;
+            delay_buffer[delay_pos] =
+                sample
+                + 0.65f * delayed;
 
-        delay_pos++;
-        if (delay_pos >= DELAY_SAMPLES)
-            delay_pos = 0;
+            delay_pos++;
+            if (delay_pos >= DELAY_SAMPLES)
+                delay_pos = 0;
 
-        buffer[i] = tanhf(out);
+            buffer[i] = tanhf(out);
+        }
+        else {
+            buffer[i] = tanhf(sample);
+        }
+
     }
 }
 

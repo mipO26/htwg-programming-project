@@ -7,9 +7,9 @@
 void c_major_chord(void)
 {
     printf("Playing C major chord...\n");
-    enqueueNote(1, C3, WHOLE_NOTE);
-    enqueueNote(2, E3, WHOLE_NOTE);
-    enqueueNote(3, G3, WHOLE_NOTE);
+    enqueueNote(1, C4, WHOLE_NOTE);
+    enqueueNote(2, E4, WHOLE_NOTE);
+    enqueueNote(3, G4, WHOLE_NOTE);
 }
 
 void d_minor_chord(void)
