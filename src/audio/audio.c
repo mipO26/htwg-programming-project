@@ -101,6 +101,7 @@ float hammer(Oscillator note)
                 * expf(-300*t)
                 * 0.15f;
     }
+    return 0;
     return ham;
 }
 
@@ -148,8 +149,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
             float t = time_from_start(notes[j].start_time) * 1e-6f;
             float osc = get_osc(p, t);
             float env = envelope(notes[j]);
-            float ham = hammer(notes[j]);
-            sample += notes[j].amplitude * (ham + osc)  * 1.002 * env;
+            sample += notes[j].amplitude * (osc)  * 1.002 * env;
             notes[j].phase +=
                 2.0 * M_PI *
                 notes[j].frequency /
@@ -220,6 +220,7 @@ void audio_terminate(SDL_AudioDeviceID device)
 
 void playNote(Note note, double duration)
 {
+    notes[note].phase = 0.0;
     notes[note].start_time = now_us();
     notes[note].end_time = add_time_note(0, duration);
 }
