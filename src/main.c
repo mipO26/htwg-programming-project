@@ -17,7 +17,8 @@ int main(void)
     * APP
     *==================================================*/
     ui();
-    // play_song();
+    printf("What do you want to do today? \nOptions: a) play a song b) play chords");
+    play_song();
 
     /*==================================================
     * TERMINATION
