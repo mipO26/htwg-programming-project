@@ -19,7 +19,7 @@ void octave(void)
 
 void ode_to_joy(void)
 {
-    set_bpm(100);
+    set_bpm(132);
     printf("Playing Ode to joy...");
 
     enqueueNote(1, E4, QUARTER_NOTE);
@@ -62,7 +62,7 @@ void ode_to_joy(void)
 }
 void ode_to_joy1(void)
 {
-    set_bpm(100);
+    set_bpm(132);
     printf("Playing Ode to joy...");
 
     enqueueNote(0, G3, HALF_NOTE);
