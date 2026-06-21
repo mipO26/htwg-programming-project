@@ -10,7 +10,7 @@ void keyboard(void)
     char bassNote1[4]; //bottom note
     char bassNote2[4]; //middle note
     char bassNote3[4]; //high note
-    char yesNo; //yes or no
+    char yesNo ; //yes or no
 
     printf("Enter your bass chord\n");
     do {
@@ -99,9 +99,15 @@ void keyboard(void)
         } else if (bassInput1 == bassInput2 && bassInput2 == bassInput3) {
             printf("You have entered the same notes three times.\n");
             char yesNo = 'n';
-        } else if (bassInput1 != bassInput2 && bassInput1 != bassInput3 && bassInput2 != bassInput3) {
+        } else if (bassInput1 != bassInput2 != bassInput3) {
             printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", *bassNote1, *bassNote2, *bassNote3);
         scanf(" %c", &yesNo);
         }
-    } while (yesNo != 'y'); //cmake --build build && ./build/Musicify to run program
+    } while (yesNo != 'y'); //        cmake --build build && ./build/Musicify         to run program
+
+    while (yesNo != 'n') {
+        enqueueNote(0, bassInput1, QUARTER_NOTE);
+        enqueueNote(0, bassInput2, QUARTER_NOTE);
+        enqueueNote(0, bassInput3, QUARTER_NOTE);
+    }
 }
