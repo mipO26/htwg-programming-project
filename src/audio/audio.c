@@ -91,18 +91,28 @@ float envelope(Oscillator note)
     return 0.5f * expf(-1.5f * t) + 0.5f * expf(-0.8f * t) + 0.4f * expf(-0.6f * t)  + 0.2f * expf(-0.3f * t) + 0.1f * expf(-0.1f * t);
 }
 
+static int useHammer = 1;
+
+void setUseHammer(int v)
+{
+    useHammer = v;
+}
+
 float hammer(Oscillator note)
 {
-    uint64_t t = time_from_start(note.start_time);
-    float ham = 0.0f;
-    if (t < 0.0008f)
+    if (useHammer == 0)
     {
-        ham = ((float)rand()/RAND_MAX*2.0f-1.0f)
-                * expf(-300*t)
-                * 0.15f;
+        return 0;
     }
-    return 0;
-    return ham;
+
+    float t = time_from_start(note.start_time) * 1e-6f;
+
+    if (t > 0.001f)
+        return 0;
+
+    return 0.8f *
+           sin(note.phase * 8.0) *
+           expf(-7000.0f * t);
 }
 
 float get_expf(float x)
@@ -114,18 +124,48 @@ float get_expf(float x)
     return 1;
 }
 
-float get_osc(float p, float t)
+static inline float clampf(float x, float lo, float hi)
+{
+    return x < lo ? lo : (x > hi ? hi : x);
+}
+
+static inline float smoothstep(float edge0, float edge1, float x)
+{
+    x = clampf((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+    return x * x * (3.0f - 2.0f * x);
+}
+
+float get_osc(float p, float t, float freq)
 {
     float osc = 1.0f * sin(p);
     
     if (ENABLE_HARMONIES)
     {
-        osc = osc
-        + 0.7f * get_expf(-0.5*t) * sin(2.0002*p)
-        + 0.45f * get_expf(-1.2*t) * sin(3.0004*p)
-        + 0.25f * get_expf(-1.9*t) * sin(4.0006*p)
-        + 0.12f * get_expf(-2.4*t) * sin(5.0009*p);
-        osc /= 2.52f;
+        float k = smoothstep(400.0f, 1000.0f, freq); // 0..1
+
+        float d2 = 1.0f + 0.0002f * k;
+        float d3 = 1.0f + 0.0003f * k;
+        float d4 = 1.0f + 0.0005f * k;
+        float d5 = 1.0f + 0.0008f * k;
+
+        // exponentional envelopes
+        float env1 = get_expf(-0.5f * t);
+        float env2 = get_expf(-1.2f * t);
+        float env3 = get_expf(-1.9f * t);
+        float env4 = get_expf(-2.4f * t);
+
+        osc =
+            sin(p)
+        + 0.7f  * env1 * sin(2.0f * d2 * p)
+        + 0.45f * env2 * sin(3.0f * d3 * p)
+        + 0.25f * env3 * sin(4.0f * d4 * p)
+        + 0.12f * env4 * sin(5.0f * d5 * p);
+        // osc = osc
+        // + 0.7f * get_expf(-0.5*t) * sin(2.0002*p)
+        // + 0.45f * get_expf(-1.2*t) * sin(3.0004*p)
+        // + 0.25f * get_expf(-1.9*t) * sin(4.0006*p)
+        // + 0.12f * get_expf(-2.4*t) * sin(5.0009*p);
+        // osc /= 2.52f;
     }
     return osc;
 }
@@ -147,9 +187,10 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
                 continue;
             double p = notes[j].phase;
             float t = time_from_start(notes[j].start_time) * 1e-6f;
-            float osc = get_osc(p, t);
+            float osc = get_osc(p, t, notes->frequency);
             float env = envelope(notes[j]);
-            sample += notes[j].amplitude * (osc)  * 1.002 * env;
+            sample += notes[j].amplitude *
+                      (osc * env + hammer(notes[j]));
             notes[j].phase +=
                 2.0 * M_PI *
                 notes[j].frequency /
@@ -227,6 +268,8 @@ void playNote(Note note, double duration)
 
 void playNoteMs(Note note, uint32_t duration_ms)
 {
+    notes[note].phase = 0.0;
+    notes[note].start_time = now_us();
     notes[note].end_time = add_time_ms(notes[note].end_time, duration_ms);
 }
 

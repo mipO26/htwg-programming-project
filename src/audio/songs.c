@@ -951,7 +951,10 @@ void hedwigs_theme(void)
 
 int play_song(void)
 {
-    // playNoteMs(C4, 3000);
+    // playNoteMs(C5, 1000);
+    // getchar();
+    // setUseHammer(0);
+    // playNoteMs(C5, 1000);
     // c_major_chord();
     // octave();
     // ode_to_joy();
