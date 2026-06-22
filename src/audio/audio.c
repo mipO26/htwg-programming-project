@@ -62,6 +62,9 @@ typedef struct {
     float amplitude;
     uint64_t start_time;
     uint64_t end_time;
+
+    bool releasing;
+    uint64_t release_time;
 } Oscillator;
 
 Oscillator notes[NOTE_COUNT];
@@ -78,6 +81,8 @@ void init_notes(void)
             notes[i].amplitude = 0.22f;
         else
             notes[i].amplitude = 0.18f;
+        notes[i].releasing = false;
+        notes[i].release_time = 0;
     }
 }
 
@@ -85,10 +90,28 @@ float envelope(Oscillator note)
 {
     if (!ENABLE_ENVELOPE)
         return 1;
-    float t = time_from_start(note.start_time) * 1e-6f;
-    if (t < 0.005f)
-        return t / 0.005f;
-    return 0.5f * expf(-1.5f * t) + 0.5f * expf(-0.8f * t) + 0.4f * expf(-0.6f * t)  + 0.2f * expf(-0.3f * t) + 0.1f * expf(-0.1f * t);
+float t = time_from_start(note.start_time) * 1e-6f;
+    float env;
+
+    if (t < 0.001f)
+        env = t / 0.001f;
+    else
+        env =
+            0.5f * expf(-1.5f * t) +
+            0.5f * expf(-0.8f * t) +
+            0.4f * expf(-0.6f * t) +
+            0.2f * expf(-0.3f * t) +
+            0.1f * expf(-0.1f * t);
+
+    if (note.releasing)
+    {
+        float tr = time_from_start(note.release_time) * 1e-6f;
+        if (tr >= RELEASE_TIME)
+            return 0.0f;
+        env *= 1.0f - tr / RELEASE_TIME;
+    }
+
+    return env;
 }
 
 static int useHammer = 1;
@@ -151,8 +174,8 @@ float get_osc(float p, float t, float freq)
         // exponentional envelopes
         float env1 = get_expf(-0.5f * t);
         float env2 = get_expf(-1.2f * t);
-        float env3 = get_expf(-1.9f * t);
-        float env4 = get_expf(-2.4f * t);
+        float env3 = get_expf(-2.9f * t);
+        float env4 = get_expf(-3.4f * t);
 
         osc =
             sin(p)
@@ -172,22 +195,28 @@ float get_osc(float p, float t, float freq)
 
 void audio_callback(void *userdata, Uint8 *stream, int len)
 {
-    runSchedulers();
-
+    
     // samples are represented as floats
     float *buffer = (float *)stream;
     int samples = len / sizeof(float);
-
+    
     // collect samples
     for (int i = 0; i < samples; i++) {
+        runSchedulers();
         int active_count = 0;
         float sample = 0.0f;
         for (int j = 0; j < NOTE_COUNT; j++) {
-            if (!is_in_future(notes[j].end_time))
+            if (notes[j].end_time == 0 && !notes[j].releasing)
                 continue;
+            if (!notes[j].releasing &&
+                !is_in_future(notes[j].end_time))
+            {
+                notes[j].releasing = true;
+                notes[j].release_time = now_us();
+            }
             double p = notes[j].phase;
             float t = time_from_start(notes[j].start_time) * 1e-6f;
-            float osc = get_osc(p, t, notes->frequency);
+            float osc = get_osc(p, t, notes[j].frequency);
             float env = envelope(notes[j]);
             sample += notes[j].amplitude *
                       (osc * env + hammer(notes[j]));
@@ -197,6 +226,17 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
                 SAMPLE_RATE;
             if (notes[j].phase >= 2.0 * M_PI)
                 notes[j].phase -= 2.0 * M_PI;
+
+            if (notes[j].releasing)
+            {
+                float tr =
+                    time_from_start(notes[j].release_time) * 1e-6f;
+                if (tr >= RELEASE_TIME)
+                {
+                    notes[j].releasing = false;
+                    notes[j].end_time = 0;
+                }
+            }
             active_count++;
         }
         if (active_count > 0)
@@ -261,6 +301,7 @@ void audio_terminate(SDL_AudioDeviceID device)
 
 void playNote(Note note, double duration)
 {
+    notes[note].releasing = false;
     notes[note].phase = 0.0;
     notes[note].start_time = now_us();
     notes[note].end_time = add_time_note(0, duration);
@@ -268,7 +309,7 @@ void playNote(Note note, double duration)
 
 void playNoteMs(Note note, uint32_t duration_ms)
 {
-    notes[note].phase = 0.0;
+    // notes[note].phase = 0.0;
     notes[note].start_time = now_us();
     notes[note].end_time = add_time_ms(notes[note].end_time, duration_ms);
 }

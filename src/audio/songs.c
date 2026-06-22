@@ -951,7 +951,7 @@ void hedwigs_theme(void)
 
 int play_song(void)
 {
-    // playNoteMs(C5, 1000);
+    // playNoteMs(C6, 1000);
     // getchar();
     // setUseHammer(0);
     // playNoteMs(C5, 1000);

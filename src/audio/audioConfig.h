@@ -3,3 +3,4 @@
 #define ENABLE_HARMONIES 1
 #define ENABLE_ENVELOPE 1
 #define ENABLE_HAMMER 1
+#define RELEASE_TIME 0.010f   // 10 ms
