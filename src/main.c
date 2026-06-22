@@ -2,6 +2,8 @@
 #include "keyboard.h"
 #include "audio/songs.h"
 #include <stdio.h>
+#include "ui/ui_handler.h"
+
 #define False 0
 
 int main(void)
