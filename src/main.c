@@ -17,10 +17,11 @@ int main(void)
     /*==================================================
     * APP
     *==================================================*/
+
     int opt;
     do {
         printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit");
-        scanf("%i", &opt);
+        scanf_s("%i", &opt);
         switch (opt)
         {
             case 1: play_song(); break;
