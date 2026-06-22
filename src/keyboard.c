@@ -100,14 +100,14 @@ void keyboard(void)
             printf("You have entered the same notes three times.\n");
             char yesNo = 'n';
         } else if (bassInput1 != bassInput2 != bassInput3) {
-            printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", *bassNote1, *bassNote2, *bassNote3);
+            printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", bassNote1, bassNote2, bassNote3);
         scanf(" %c", &yesNo);
         }
     } while (yesNo != 'y'); //        cmake --build build && ./build/Musicify         to run program
 
     while (yesNo != 'n') {
-        enqueueNote(0, bassInput1, QUARTER_NOTE);
-        enqueueNote(0, bassInput2, QUARTER_NOTE);
-        enqueueNote(0, bassInput3, QUARTER_NOTE);
+        playNoteMs(bassInput1, UINT32_MAX);
+        playNoteMs(bassInput2, UINT32_MAX);
+        playNoteMs(bassInput3, UINT32_MAX);
     }
 }
