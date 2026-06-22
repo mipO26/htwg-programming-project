@@ -8,6 +8,8 @@ typedef enum {
     PAUSE, NOTE_COUNT
 } Note;
 
+extern const char *const note_names[NOTE_COUNT];
+
 typedef struct ScheduledNote {
     uint64_t start;
     uint64_t end;

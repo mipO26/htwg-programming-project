@@ -7,7 +7,7 @@ void keyboard(void)
     char bassInput1;
     char bassInput2;
     char bassInput3;
-    char bassNote1[4]; //bottom note
+    Note bassNote1; //bottom note
     char bassNote2[4]; //middle note
     char bassNote3[4]; //high note
     char yesNo ; //yes or no
@@ -22,7 +22,7 @@ void keyboard(void)
         scanf(" %c", &bassInput3);
 
         switch (bassInput1) {
-        case 'q': playNote(C4, WHOLE_NOTE); break;
+        case 'q': playNote(C4, WHOLE_NOTE); bassNote1 = C4; break;
         case 'w': playNote(Cs4, WHOLE_NOTE); break;
         case 'e': playNote(D4, WHOLE_NOTE); break;
         case 'r': playNote(Ds4, WHOLE_NOTE); break;
@@ -100,14 +100,15 @@ void keyboard(void)
             printf("You have entered the same notes three times.\n");
             char yesNo = 'n';
         } else if (bassInput1 != bassInput2 != bassInput3) {
-            printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", bassNote1, bassNote2, bassNote3);
-        scanf(" %c", &yesNo);
+            printf("Are you certain with your selection of notes? y/n: %s, %s, %s ", note_names[bassNote1], bassNote2, bassNote3);
+            scanf(" %c", &yesNo);
         }
     } while (yesNo != 'y'); //        cmake --build build && ./build/Musicify         to run program
 
-    while (yesNo != 'n') {
-        playNoteMs(bassInput1, UINT32_MAX);
-        playNoteMs(bassInput2, UINT32_MAX);
-        playNoteMs(bassInput3, UINT32_MAX);
-    }
+    playNoteMs(bassInput1, UINT32_MAX);
+    playNoteMs(bassInput2, UINT32_MAX);
+    playNoteMs(bassInput3, UINT32_MAX);
+
+    getchar();
+    getchar();
 }
