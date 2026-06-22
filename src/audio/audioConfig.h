@@ -1,0 +1,4 @@
+#define DELAY_MS 100
+#define ENABLE_DELAY 1
+#define ENABLE_HARMONIES 1
+#define ENABLE_ENVELOPE 1
