@@ -56,6 +56,9 @@ double freq[NOTE_COUNT] = {
 };
 
 
+//---------------------------------------------------------------
+// We store separate oscillators for each Note
+//---------------------------------------------------------------
 typedef struct {
     double frequency;
     double phase;
@@ -69,13 +72,16 @@ typedef struct {
 
 Oscillator notes[NOTE_COUNT];
 
+//---------------------------------------------------------------
+// Initializes oscilator for all the Notes
+//---------------------------------------------------------------
 void init_notes(void)
 {
     for (int i = 0; i < NOTE_COUNT; i++) {
         notes[i].phase = 0.0;
         notes[i].frequency = freq[i];
         notes[i].end_time = 0;
-        if (freq[i] < 200)
+        if (freq[i] < 200) // the lower frequencies must be a bit louder
             notes[i].amplitude = 0.30f;
         else if (freq[i] < 400)
             notes[i].amplitude = 0.22f;
@@ -86,11 +92,17 @@ void init_notes(void)
     }
 }
 
+//---------------------------------------------------------------
+// Simulates the non-constant volume of piano string
+// When the hammer hits the string, the volume is at its peak
+// Then it is kept at the sustain level with slow decrease.
+// When the key is released it dissolves quicker
+//---------------------------------------------------------------
 float envelope(Oscillator note)
 {
     if (!ENABLE_ENVELOPE)
         return 1;
-float t = time_from_start(note.start_time) * 1e-6f;
+    float t = time_from_start(note.start_time) * 1e-6f;
     float env;
 
     if (t < 0.001f)
@@ -114,19 +126,11 @@ float t = time_from_start(note.start_time) * 1e-6f;
     return env;
 }
 
-static int useHammer = 1;
-
-void setUseHammer(int v)
-{
-    useHammer = v;
-}
-
+//---------------------------------------------------------------
+// Simulates the noice of hammer hitting the string
+//---------------------------------------------------------------
 float hammer(Oscillator note)
 {
-    if (useHammer == 0)
-    {
-        return 0;
-    }
 
     float t = time_from_start(note.start_time) * 1e-6f;
 
@@ -138,6 +142,9 @@ float hammer(Oscillator note)
            expf(-7000.0f * t);
 }
 
+//---------------------------------------------------------------
+// Introduces slow decay
+//---------------------------------------------------------------
 float get_expf(float x)
 {
     if (ENABLE_DELAY)
@@ -152,12 +159,18 @@ static inline float clampf(float x, float lo, float hi)
     return x < lo ? lo : (x > hi ? hi : x);
 }
 
+//---------------------------------------------------------------
+// Normalizes number between two ranges
+//---------------------------------------------------------------
 static inline float smoothstep(float edge0, float edge1, float x)
 {
     x = clampf((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
     return x * x * (3.0f - 2.0f * x);
 }
 
+//---------------------------------------------------------------
+// Normalizes
+//---------------------------------------------------------------
 float get_osc(float p, float t, float freq)
 {
     float osc = 1.0f * sin(p);
@@ -183,12 +196,6 @@ float get_osc(float p, float t, float freq)
         + 0.45f * env2 * sin(3.0f * d3 * p)
         + 0.25f * env3 * sin(4.0f * d4 * p)
         + 0.12f * env4 * sin(5.0f * d5 * p);
-        // osc = osc
-        // + 0.7f * get_expf(-0.5*t) * sin(2.0002*p)
-        // + 0.45f * get_expf(-1.2*t) * sin(3.0004*p)
-        // + 0.25f * get_expf(-1.9*t) * sin(4.0006*p)
-        // + 0.12f * get_expf(-2.4*t) * sin(5.0009*p);
-        // osc /= 2.52f;
     }
     return osc;
 }
