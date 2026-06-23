@@ -22,7 +22,7 @@ int main(void)
     int opt;
     do {
         printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit");
-        scanf_s("%i", &opt);
+        scanf("%i", &opt);
         switch (opt)
         {
             case 1: play_song(); break;
