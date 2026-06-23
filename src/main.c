@@ -19,18 +19,17 @@ int main(void)
     * APP
     *==================================================*/
 
-    void note_vis(Note note);
-    // int opt;
-    // do {
-    //     printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit");
-    //     scanf_s("%i", &opt);
-    //     switch (opt)
-    //     {
-    //         case 1: play_song(); break;
-    //         case 2: keyboard(); break;
-    //     }
+    int opt;
+    do {
+        printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit");
+        scanf_s("%i", &opt);
+        switch (opt)
+        {
+            case 1: play_song(); break;
+            case 2: keyboard(); break;
+        }
 
-    // } while (opt != 3);
+    } while (opt != 3);
     
     /*==================================================
     * TERMINATION
