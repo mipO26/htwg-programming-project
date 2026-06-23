@@ -19,16 +19,16 @@ int main(void)
     * APP
     *==================================================*/
 
-    printf("\033[41mRed background\033[0m\n");
-    // setNoteDisplayActive(C4);
-    // setNoteDisplayActive(D4);
-    // setNoteDisplayActive(E4);
-    // renderUi();
-    // getchar();
-    // setNoteDisplayInactive(C4);
-    // setNoteDisplayActive(Cs3);
-    // renderUi();
-    // getchar();
+    //printf("\033[41mRed background\033[0m\n");
+    setNoteDisplayActive(C4);
+    setNoteDisplayActive(D4);
+    setNoteDisplayActive(E4);
+    renderUi();
+    getchar();
+    setNoteDisplayInactive(C4);
+    setNoteDisplayActive(Cs3);
+    renderUi();
+    getchar();
 
     // int opt;
     // do {
