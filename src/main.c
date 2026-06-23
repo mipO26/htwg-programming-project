@@ -19,28 +19,17 @@ int main(void)
     * APP
     *==================================================*/
 
-    printf("\033[41mRed background\033[0m\n");
-    // setNoteDisplayActive(C4);
-    // setNoteDisplayActive(D4);
-    // setNoteDisplayActive(E4);
-    // renderUi();
-    // getchar();
-    // setNoteDisplayInactive(C4);
-    // setNoteDisplayActive(Cs3);
-    // renderUi();
-    // getchar();
+    int opt;
+    do {
+        printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit");
+        scanf("%i", &opt);
+        switch (opt)
+        {
+            case 1: play_song(); break;
+            case 2: keyboard(); break;
+        }
 
-    // int opt;
-    // do {
-    //     printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit");
-    //     scanf("%i", &opt);
-    //     switch (opt)
-    //     {
-    //         case 1: play_song(); break;
-    //         case 2: keyboard(); break;
-    //     }
-
-    // } while (opt != 3);
+    } while (opt != 3);
     
     /*==================================================
     * TERMINATION
