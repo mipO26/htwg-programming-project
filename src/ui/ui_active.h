@@ -2,4 +2,6 @@
 
 #include "audio/notes.h"
 
-void note_vis(Note note);
+void renderUi();
+void setNoteDisplayActive(Note note);
+void setNoteDisplayInactive(Note note);

@@ -14,6 +14,22 @@
 #define NUMBER_OCTAVES 3
 #define WIDTH_TOTAL (WIDTH_T * NUMBER_OCTAVES) //total width over all octaves
 
+
+//---------------------------------------------------------------
+// TODO DESCRIPTION
+//---------------------------------------------------------------
+static int active_notes[89] = {0};
+
+void setNoteDisplayActive(Note note)
+{
+    active_notes[note] = 1;
+}
+
+void setNoteDisplayInactive(Note note)
+{
+    active_notes[note] = 0;
+}
+
 //---------------------------------------------------------------
 // note_vis: maps a Note enum value to (octave, key index, is_black)
 // so the drawing code knows WHERE on the canvas to highlight.
@@ -38,6 +54,7 @@ typedef struct {
 static KeyPos note_to_keypos(Note note) {
     KeyPos pos;
     int n = (int)note;          // raw enum value, 0 = C3, 1 = Cs3, ... 35 = B5
+    n -= 27;
     pos.octave = n / 12;        // which of the 3 octaves
     int in_oct = n % 12;        // position within the octave (0-11)
 
@@ -54,16 +71,47 @@ static KeyPos note_to_keypos(Note note) {
 // ui: draws the full keyboard (3 octaves) with no key highlighted.
 // kept your original drawing logic, just looped over NUMBER_OCTAVES.
 //---------------------------------------------------------------
-void ui() {
-    note_vis(NOTE_COUNT); // NOTE_COUNT is out of range -> no key gets highlighted
-}
 
 //---------------------------------------------------------------
 // note_vis: draws the full keyboard and highlights the key
 // that corresponds to "note". Pass NOTE_COUNT (or any invalid
 // Note) to draw the keyboard with nothing highlighted.
 //---------------------------------------------------------------
-void note_vis(Note note) {
+
+// TODO - fix the comments here
+void highlight_note(Note note, char bild[][WIDTH_TOTAL + 1])
+{
+    KeyPos pos = note_to_keypos(note);
+
+    if (pos.is_black) {
+        // overwrite the black key block with a highlight char
+        int grenze = pos.octave * WIDTH_T + (pos.white_idx + 1) * W_WHITE;
+        int start = grenze - W_WHITE / 2;
+        for (int y = 0; y < H_BLACK; y++) {
+            for (int x = 0; x < W_BLACK; x++) {
+                bild[y][start + x] = '*'; // highlighted black key
+            }
+        }
+    }
+    else {
+        // overwrite the white key body (between its borders) with a highlight char
+        int x_start = pos.octave * WIDTH_T + pos.white_idx * W_WHITE + 1;
+        int x_end = pos.octave * WIDTH_T + pos.white_idx * W_WHITE + W_WHITE - 1;
+        for (int y = 0; y < H_WHITE - 1; y++) { // not the bottom border row
+            for (int x = x_start; x < x_end; x++) {
+                if (bild[y][x] == ' ') {
+                    bild[y][x] = '*'; // highlighted white key area
+                }
+            }
+        }
+        // re-draw the note name on top so it stays readable
+        int mitte = pos.octave * WIDTH_T + pos.white_idx * W_WHITE + W_WHITE / 2;
+        bild[H_WHITE - 2][mitte] = name[pos.white_idx];
+        bild[H_WHITE - 2][mitte + 1] = (char)('0' + (3 + pos.octave));
+    }
+}
+
+void renderUi() {
     //2D-Array for canvas (now spans all octaves)
     char bild[H_WHITE][WIDTH_TOTAL + 1];
 
@@ -122,39 +170,19 @@ void note_vis(Note note) {
         }
     }
 
-    // 6. highlight the pressed key, if "note" is a valid Note
-    if (note >= 0 && note < NOTE_COUNT) {
-        KeyPos pos = note_to_keypos(note);
-
-        if (pos.is_black) {
-            // overwrite the black key block with a highlight char
-            int grenze = pos.octave * WIDTH_T + (pos.white_idx + 1) * W_WHITE;
-            int start = grenze - W_WHITE / 2;
-            for (int y = 0; y < H_BLACK; y++) {
-                for (int x = 0; x < W_BLACK; x++) {
-                    bild[y][start + x] = '*'; // highlighted black key
-                }
-            }
-        }
-        else {
-            // overwrite the white key body (between its borders) with a highlight char
-            int x_start = pos.octave * WIDTH_T + pos.white_idx * W_WHITE + 1;
-            int x_end = pos.octave * WIDTH_T + pos.white_idx * W_WHITE + W_WHITE - 1;
-            for (int y = 0; y < H_WHITE - 1; y++) { // not the bottom border row
-                for (int x = x_start; x < x_end; x++) {
-                    if (bild[y][x] == ' ') {
-                        bild[y][x] = '*'; // highlighted white key area
-                    }
-                }
-            }
-            // re-draw the note name on top so it stays readable
-            int mitte = pos.octave * WIDTH_T + pos.white_idx * W_WHITE + W_WHITE / 2;
-            bild[H_WHITE - 2][mitte] = name[pos.white_idx];
-            bild[H_WHITE - 2][mitte + 1] = (char)('0' + (3 + pos.octave));
+    for (Note n = C3; n <= B5;n++)
+    {
+        if (active_notes[n])
+        {
+            highlight_note(n, bild);
         }
     }
 
     // top end
+    for (int i = 0; i < 100; i++)
+    {
+        printf("\n");
+    }
     for (int x = 0; x < WIDTH_TOTAL; x++) printf("_");
     printf("\n");
 
