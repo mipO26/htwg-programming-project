@@ -20,7 +20,6 @@ bool enqueueNote(int schedId, Note note, double length)
     Queue *q = &schedulers[schedId];
     ScheduledNote lastSchNote = safe_queue_peak_tail(q);
     ScheduledNote newSchNote;
-    //note_vis(note);
     newSchNote.start = lastSchNote.end;
     newSchNote.end = add_time_note(lastSchNote.end, length);
     newSchNote.note = note;
