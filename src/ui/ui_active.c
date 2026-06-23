@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
+//This file is focusing on displaying the pressed note on the key board. 
+// It is using matrices for the canvas locations and for loops for actually filling
+// the canvas with either empty spaces and # for white and black keys or * for pressed keys
+
+
 //Definition of format of piano (with, how many keys,...)
 #define NUMBER_WHITE 7          //Number of white keys in a full octave
 #define W_WHITE 6               //Width of white keys in signs
@@ -16,7 +21,7 @@
 
 
 //---------------------------------------------------------------
-// TODO DESCRIPTION
+// Activation and Deactivation of notes
 //---------------------------------------------------------------
 static int active_notes[88] = {0};
 
@@ -38,13 +43,7 @@ void deactivateDisplayAllNotes()
     }
 }
 
-//---------------------------------------------------------------
-// note_vis: maps a Note enum value to (octave, key index, is_black)
-// so the drawing code knows WHERE on the canvas to highlight.
-//---------------------------------------------------------------
-
 // is there a black key after the i-th white key in an octave?
-// (no black key between E-F and B-C)
 static const int white_black[NUMBER_WHITE] = { 1,1,0,1,1,1,0 };
 
 // names of white keys in an octave, in order
@@ -75,18 +74,7 @@ static KeyPos note_to_keypos(Note note) {
     return pos;
 }
 
-//---------------------------------------------------------------
-// ui: draws the full keyboard (3 octaves) with no key highlighted.
-// kept your original drawing logic, just looped over NUMBER_OCTAVES.
-//---------------------------------------------------------------
 
-//---------------------------------------------------------------
-// note_vis: draws the full keyboard and highlights the key
-// that corresponds to "note". Pass NOTE_COUNT (or any invalid
-// Note) to draw the keyboard with nothing highlighted.
-//---------------------------------------------------------------
-
-// TODO - fix the comments here
 void highlight_note(Note note, char bild[][WIDTH_TOTAL + 1])
 {
     KeyPos pos = note_to_keypos(note);
