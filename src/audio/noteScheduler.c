@@ -2,7 +2,6 @@
 #include "timing.h"
 #include "queue.h"
 #include "audio.h"
-#include "ui/ui_active.c"
 
 #define SCHEDULER_COUNT 4
 

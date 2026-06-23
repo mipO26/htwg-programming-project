@@ -1,3 +1,5 @@
+#pragma once
+
 #include "notes.h"
 #include <stdbool.h>
 

@@ -1,3 +1,4 @@
+#pragma once
 
 
 void c_major_chord(void);
