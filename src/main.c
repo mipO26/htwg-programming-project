@@ -18,17 +18,20 @@ int main(void)
     /*==================================================
     * APP
     *==================================================*/
-
+    printf("SONATE IN C-CODE\n");
+    ui();
+    printf("\n\nWhat would you want to do today?");
+    printf("\na) play a song\nb)play a chord");
     int opt;
     do {
-        printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit");
+        printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit\n");
         scanf("%i", &opt);
+        flushInputBuffer();
         switch (opt)
         {
             case 1: play_song(); break;
             case 2: keyboard(); break;
         }
-
     } while (opt != 3);
     
     /*==================================================

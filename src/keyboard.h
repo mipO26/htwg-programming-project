@@ -7,3 +7,4 @@
 #include <stdlib.h>
 
 void keyboard(void);
+void flushInputBuffer();
