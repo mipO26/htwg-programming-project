@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -9,9 +11,11 @@ uint64_t add_time_note(uint64_t time, double note_length);
 bool is_in_future(uint64_t time);
 bool is_in_past(uint64_t time);
 
+uint64_t time_from_start(uint64_t start);
+uint64_t time_to_end(uint64_t end);
 
 /*
     --- Enable this during testing ---
 */ 
 
-// uint64_t now_us(void);
+uint64_t now_us(void);

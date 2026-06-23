@@ -140,6 +140,12 @@ playNote(C4, WHOLE_NOTE); // Start playing C4
 stopNote(C4); // Stop playing C4
 ```
 
+### Display of Notes
+The notes you can hear are also seen on a visual keyboard using ascii drawing.
+
+```c
+note_vis(note)
+```
 
 ## About
 

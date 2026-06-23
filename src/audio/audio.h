@@ -1,6 +1,9 @@
+#pragma once
+
 #ifndef SOUND_H
 #define SOUND_H
 
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <stdbool.h>
 #include "notes.h"
@@ -17,5 +20,7 @@ void audio_terminate(SDL_AudioDeviceID device);
 void playNote(Note note, double duration);
 void playNoteMs(Note note, uint32_t duration_ms);
 void stopNote(Note note);
+
+void setUseHammer(int v);
 
 #endif /* SOUND_H */

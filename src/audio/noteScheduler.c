@@ -21,6 +21,10 @@ bool enqueueNote(int schedId, Note note, double length)
     ScheduledNote lastSchNote = safe_queue_peak_tail(q);
     ScheduledNote newSchNote;
     newSchNote.start = lastSchNote.end;
+    if (newSchNote.start > 5000)
+    {
+        newSchNote.start -= 5000;
+    }
     newSchNote.end = add_time_note(lastSchNote.end, length);
     newSchNote.note = note;
     newSchNote.length = length;

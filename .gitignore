@@ -11,6 +11,9 @@ compile_commands.json
 # VS Code
 .vscode/
 
+# VS Studio
+.vs
+
 # macOS
 .DS_Store
 
@@ -18,3 +21,6 @@ compile_commands.json
 *.out
 *.exe
 Musicify
+
+
+musicSource/
