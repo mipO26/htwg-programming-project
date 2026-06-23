@@ -1,6 +1,7 @@
 #include "keyboard.h"
 #include "audio/audio.h"
 #include "audio/notes.h"
+#include "ui/ui_active.h"
 
 void flushInputBuffer() {
     int c;
@@ -54,6 +55,10 @@ void keyboard(void)
             default: printf("You have entered an invalid note. Please re-enter.\n"); continue; break;
         }
 
+        setNoteDisplayActive(bassNote1);
+        renderUi();
+        
+
         printf("\nEnter middle note = ");
         getUserInputChar(&bassInput2);
 
@@ -80,6 +85,9 @@ void keyboard(void)
             case 'z': bassNote2 = G5; break;
             default: printf("You have entered an invalid note. Please re-enter.\n"); continue; break;
         }
+        setNoteDisplayActive(bassNote2);
+        renderUi();
+
         printf("\nEnter top note = ");
         getUserInputChar(&bassInput3);
         switch (bassInput3) {
@@ -105,15 +113,20 @@ void keyboard(void)
             case 'z': bassNote3 = G5; break;
             default: printf("You have entered an invalid note. Please re-enter.\n"); continue; break;
         }
+        setNoteDisplayActive(bassNote3);
+        renderUi();
         if (bassInput1 == bassInput2 && bassInput2 == bassInput3) {
             printf("You have entered the same notes three times.\n");
+            deactivateDisplayAllNotes();
             char yesNo = 'n';
         } else if (bassInput1 == bassInput2 || bassInput1 == bassInput3 || bassInput2 == bassInput3){
             printf("You have entered duplicate notes. Please enter different notes.\n");
+            deactivateDisplayAllNotes();
             char yesNo = 'n';
         } else if (bassInput1 != bassInput2 && bassInput2 != bassInput3 && bassInput1 != bassInput3) {
             printf("Are you certain with your selection of notes: %s, %s, %s", note_names[bassNote1], note_names[bassNote2], note_names[bassNote3]);
             printf("\npress y/n to confirm or change your selection: ");
+            deactivateDisplayAllNotes();
             getUserInputChar(&yesNo);
             flushInputBuffer(); // Clear the input buffer
         }
