@@ -18,7 +18,7 @@
 //---------------------------------------------------------------
 // TODO DESCRIPTION
 //---------------------------------------------------------------
-static int active_notes[89] = {0};
+static int active_notes[88] = {0};
 
 void setNoteDisplayActive(Note note)
 {
@@ -28,6 +28,14 @@ void setNoteDisplayActive(Note note)
 void setNoteDisplayInactive(Note note)
 {
     active_notes[note] = 0;
+}
+
+void deactivateDisplayAllNotes()
+{
+    for (int i = 0; i < NOTE_COUNT; i++)
+    {
+        active_notes[i] = 0;
+    }
 }
 
 //---------------------------------------------------------------
