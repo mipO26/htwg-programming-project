@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "audio/audio.h"
 #include "keyboard.h"
 #include "audio/songs.h"
