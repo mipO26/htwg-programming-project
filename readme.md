@@ -20,6 +20,7 @@ brew install sdl2
 
 Generate the build files with CMake:
 
+
 ```bash
 cmake -S . -B build
 ```
