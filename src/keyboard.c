@@ -22,7 +22,29 @@ void keyboard(void)
     Note bassNote2; //middle note
     Note bassNote3; //high note
     char yesNo = 'n' ; //yes or no
-
+    printf("--------------------------------\n");
+    printf("q = C4\n");
+    printf("w = C#4\n");
+    printf("e = D4\n");
+    printf("r = D#4\n");
+    printf("t = E4\n");
+    printf("y = F4\n");
+    printf("u = F#4\n");
+    printf("i = G4\n");
+    printf("o = G#4\n");
+    printf("p = A4\n");
+    printf("a = A#4\n");
+    printf("s = B4\n");
+    printf("d = C5\n");
+    printf("f = C#5\n");
+    printf("g = D5\n");
+    printf("h = D#5\n");
+    printf("j = E5\n");
+    printf("k = F5\n");
+    printf("l = F#5\n");
+    printf("z = G5\n");
+    printf("--------------------------------\n");
+    printf("\n^^^ Table of which keys corresponds to which notes ^^^\n");
     printf("Enter your bass chord\n");
     printf("Use the following keys to select your notes:\n");
     do {
