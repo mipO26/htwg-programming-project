@@ -1614,7 +1614,5 @@ int play_song(void)
     my_heart_will_go_on();
     // my_heart_will_go_on_low();
     // hedwigs_theme();
-
-    getchar();
     return 0;
 }

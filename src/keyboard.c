@@ -9,8 +9,8 @@ void flushInputBuffer() {
 }
 
 void getUserInputChar(char *input) {
-    scanf("%c", input);
-    flushInputBuffer(); // Clear the input buffer
+    // flushInputBuffer(); // Clear the input buffer
+    scanf(" %c", input);
 }
 
 void keyboard(void)
@@ -21,10 +21,7 @@ void keyboard(void)
     Note bassNote1; //bottom note
     Note bassNote2; //middle note
     Note bassNote3; //high note
-    char notANote1 = 0;
-    char notANote2 = 0;
-    char notANote3 = 0;
-    char yesNo ; //yes or no
+    char yesNo = 'n' ; //yes or no
 
     printf("Enter your bass chord\n");
     printf("Use the following keys to select your notes:\n");
@@ -118,24 +115,21 @@ void keyboard(void)
         if (bassInput1 == bassInput2 && bassInput2 == bassInput3) {
             printf("You have entered the same notes three times.\n");
             deactivateDisplayAllNotes();
-            char yesNo = 'n';
+            yesNo = 'n';
         } else if (bassInput1 == bassInput2 || bassInput1 == bassInput3 || bassInput2 == bassInput3){
             printf("You have entered duplicate notes. Please enter different notes.\n");
             deactivateDisplayAllNotes();
-            char yesNo = 'n';
+            yesNo = 'n';
         } else if (bassInput1 != bassInput2 && bassInput2 != bassInput3 && bassInput1 != bassInput3) {
             printf("Are you certain with your selection of notes: %s, %s, %s", note_names[bassNote1], note_names[bassNote2], note_names[bassNote3]);
             printf("\npress y/n to confirm or change your selection: ");
             deactivateDisplayAllNotes();
             getUserInputChar(&yesNo);
-            flushInputBuffer(); // Clear the input buffer
         }
 
     } while (yesNo != 'y'); //        cmake --build build && ./build/Musicify         to run program
 
-    playNoteMs(bassNote1, UINT32_MAX);
-    playNoteMs(bassNote2, UINT32_MAX);
-    playNoteMs(bassNote3, UINT32_MAX);
-
-    getchar();
+    playNoteMs(bassNote1, 5 * 1000);
+    playNoteMs(bassNote2, 5 * 1000);
+    playNoteMs(bassNote3, 5 * 1000);
 }
