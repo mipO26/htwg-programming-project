@@ -15,6 +15,11 @@ int main(void)
     * INITIALIZATION
     *==================================================*/
     SDL_AudioDeviceID device = audio_init();
+    #ifdef _WIN32
+
+        SetConsoleOutputCP(CP_UTF8);
+
+    #endif
 
     /*==================================================
     * APP
