@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "ui/ui_handler.h"
 #include "ui/ui_active.h"
+#include "audio/noteScheduler.h"
 
 #define False 0
 
@@ -27,6 +28,7 @@ int main(void)
         printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit\n");
         scanf("%i", &opt);
         flushInputBuffer();
+        emptyAllSchedulers();
         switch (opt)
         {
             case 1: play_song(); break;

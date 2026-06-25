@@ -2,6 +2,7 @@
 #include "timing.h"
 #include "queue.h"
 #include "audio.h"
+#include "ui/ui_active.h"
 
 #define SCHEDULER_COUNT 4
 
@@ -43,6 +44,36 @@ ScheduledNote dequeueNote(int schedId)
     Queue *q = &schedulers[schedId];
     return dequeue(q);
 }
+
+void emptyScheduler(int schedId)
+{
+    Queue *q = &schedulers[schedId];
+    while (!queue_is_empty(q))
+    {
+        dequeue(q);
+    }
+}
+
+void emptyAllSchedulers()
+{
+    for (int i = 0; i < SCHEDULER_COUNT; i++)
+    {
+        emptyScheduler(i);
+    }
+}
+
+bool isSongFinished()
+{
+    for (int i = 0; i < SCHEDULER_COUNT; i++)
+    {
+        if (!queue_is_empty(&schedulers[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void runSchedulers()
 {

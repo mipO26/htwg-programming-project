@@ -2,6 +2,7 @@
 #include "noteScheduler.h"
 #include "chords.h"
 #include "timing.h"
+#include "ui/ui_active.h"
 
 
 void octave(void)
@@ -1610,9 +1611,18 @@ int play_song(void)
     // octave();
     // ode_to_joy();
     // ode_to_joy1();
-    // ode_to_joy2();
-    my_heart_will_go_on();
+    ode_to_joy2();
+    // my_heart_will_go_on();
     // my_heart_will_go_on_low();
     // hedwigs_theme();
+
+    while (!isSongFinished())
+    {
+        // renderUi();
+        renderUiFullKeyboard();
+        sleep_ms(10);
+    }
+    renderUiFullKeyboard();
+    sleep_ms(500);
     return 0;
 }

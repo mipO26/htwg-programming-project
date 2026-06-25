@@ -14,6 +14,8 @@ bool is_in_past(uint64_t time);
 uint64_t time_from_start(uint64_t start);
 uint64_t time_to_end(uint64_t end);
 
+void sleep_ms(unsigned int ms);
+
 /*
     --- Enable this during testing ---
 */ 

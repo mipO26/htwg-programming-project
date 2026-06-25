@@ -61,7 +61,7 @@ typedef struct {
 static KeyPos note_to_keypos(Note note) {
     KeyPos pos;
     int n = (int)note;          // raw enum value, 0 = C3, 1 = Cs3, ... 35 = B5
-    n -= 27;
+    n += 9;
     pos.octave = n / 12;        // which of the 3 octaves
     int in_oct = n % 12;        // position within the octave (0-11)
 
@@ -78,6 +78,7 @@ static KeyPos note_to_keypos(Note note) {
 void highlight_note(Note note, char bild[][WIDTH_TOTAL + 1])
 {
     KeyPos pos = note_to_keypos(note);
+    pos.octave -= 3;
 
     if (pos.is_black) {
         // overwrite the black key block with a highlight char
@@ -104,6 +105,14 @@ void highlight_note(Note note, char bild[][WIDTH_TOTAL + 1])
         int mitte = pos.octave * WIDTH_T + pos.white_idx * W_WHITE + W_WHITE / 2;
         bild[H_WHITE - 2][mitte] = name[pos.white_idx];
         bild[H_WHITE - 2][mitte + 1] = (char)('0' + (3 + pos.octave));
+    }
+}
+
+void clearScreen(int lines)
+{
+    for (int i = 0; i < lines; i++)
+    {
+        printf("\n");
     }
 }
 
@@ -174,15 +183,45 @@ void renderUi() {
         }
     }
 
+    clearScreen(50);
     // top end
-    for (int i = 0; i < 100; i++)
-    {
-        printf("\n");
-    }
     for (int x = 0; x < WIDTH_TOTAL; x++) printf("_");
     printf("\n");
 
     for (int y = 0; y < H_WHITE; y++) {
         printf("%s\n", bild[y]);
     }
+}
+
+
+void renderUiFullKeyboard()
+{
+    clearScreen(50);
+    for (int i = 0; i < NOTE_COUNT - 1; i++)
+    {
+        if (!note_to_keypos(i).is_black)
+        {
+            printf(" ");
+        } else if (active_notes[i])
+        {
+            printf("\033[31m█\033[0m");
+        } else {
+            printf("▓");
+        }
+    }
+    printf("\n");
+    for (int i = 0; i < NOTE_COUNT - 1; i++)
+    {
+        if (note_to_keypos(i).is_black)
+        {
+            printf(" ");
+        } else if (active_notes[i])
+        {
+            printf("\033[31m█\033[0m");
+        } else {
+            printf("▓");
+        }
+    }
+    printf("");
+    clearScreen(5);
 }

@@ -8,3 +8,7 @@ bool isNextNoteReady(int schedId);
 ScheduledNote dequeueNote(int schedId);
 void initSchedulers();
 void runSchedulers();
+
+void emptyScheduler(int schedId);
+void emptyAllSchedulers();
+bool isSongFinished();
