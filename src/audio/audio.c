@@ -211,7 +211,10 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
     // collect samples
     for (int i = 0; i < samples; i++) {
         runSchedulers();
-        deactivateDisplayAllNotes();
+        if (get_song_mode_active())
+        {
+            deactivateDisplayAllNotes();
+        }
         int active_count = 0;
         float sample = 0.0f;
         for (int j = 0; j < NOTE_COUNT; j++) {
@@ -223,7 +226,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
                 notes[j].releasing = true;
                 notes[j].release_time = now_us();
             }
-            if (is_in_future(notes[j].end_time))
+            if (is_in_future(notes[j].end_time) && get_song_mode_active())
             {
                 setNoteDisplayActive(j);
             }

@@ -4,6 +4,17 @@
 #include "timing.h"
 #include "ui/ui_active.h"
 
+static int song_mode_active = 0;
+
+int get_song_mode_active()
+{
+    return song_mode_active;
+}
+
+void set_song_mode_active(int active)
+{
+    song_mode_active = active;
+}
 
 void octave(void)
 {
@@ -1603,6 +1614,7 @@ void my_heart_will_go_on_low()
 
 int play_song(void)
 {
+    set_song_mode_active(1);
     // playNoteMs(C6, 1000);
     // getchar();
     // setUseHammer(0);
@@ -1624,5 +1636,7 @@ int play_song(void)
     }
     renderUiFullKeyboard();
     sleep_ms(500);
+    set_song_mode_active(0);
+    deactivateDisplayAllNotes();
     return 0;
 }
