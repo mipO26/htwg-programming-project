@@ -3,6 +3,7 @@
 #include "chords.h"
 #include "timing.h"
 #include "ui/ui_active.h"
+#include "audioConfig.h"
 
 static int song_mode_active = 0;
 
@@ -12,10 +13,10 @@ void end_song()
     while (!isSongFinished())
     {
         // renderUi();
-        renderUiFullKeyboard();
+        if (SHOW_KEYBOARD) renderUiFullKeyboard();
         sleep_ms(10);
     }
-    renderUiFullKeyboard();
+    if (SHOW_KEYBOARD) renderUiFullKeyboard();
     sleep_ms(500);
 }
 
@@ -941,6 +942,394 @@ void my_heart_will_go_on()
     enqueueNote(0, Fs3, EIGHTH_NOTE);
     enqueueNote(0, B3, EIGHTH_NOTE);
 
+        enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+
+    // Measure 32
+
+    // Right hand
+    enqueueNote(2, Cs4, DOTTED_HALF_NOTE);
+    enqueueNote(2, Cs5, WHOLE_NOTE);
+    enqueueNote(2, Cs4, EIGHTH_NOTE);
+    enqueueNote(2, Ds4, SIXTEENTH_NOTE);
+    enqueueNote(2, Cs4, SIXTEENTH_NOTE);
+
+    // Left hand
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, A3, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, A3, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+
+
+    // Measure 33
+
+    // Right hand
+    enqueueNote(2, B3, HALF_NOTE);
+    enqueueNote(2, PAUSE, DOTTED_QUARTER_NOTE);
+    enqueueNote(2, Gs4, EIGHTH_NOTE);
+    enqueueNote(2, A4, EIGHTH_NOTE);
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, Cs5, EIGHTH_NOTE);
+    enqueueNote(2, Ds5, EIGHTH_NOTE);
+
+    // Inner voice
+    enqueueNote(1, PAUSE, HALF_NOTE);
+    enqueueNote(1, A3, HALF_NOTE);
+
+    // Left hand
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, A3, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, A3, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+
+    // Measure 34
+
+    // Right hand
+    enqueueNote(2, E4, WHOLE_NOTE);
+    enqueueNote(2, E5, WHOLE_NOTE);
+
+    // Left hand
+    enqueueNote(0, Cs3, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+
+    enqueueNote(0, Cs3, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+
+        // Measure 35
+
+    // Right hand
+    enqueueNote(2, Fs4, DOTTED_HALF_NOTE);
+    enqueueNote(2, Ds5, WHOLE_NOTE);
+    enqueueNote(2, B3, QUARTER_NOTE);
+
+    // Left hand
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, Ds4, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, Ds4, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+
+    // Measure 36
+
+    // Right hand
+    enqueueNote(2, B4, HALF_NOTE);
+    enqueueNote(2, Cs5, WHOLE_NOTE);
+    enqueueNote(2, A4, QUARTER_NOTE);
+    enqueueNote(2, Gs4, EIGHTH_NOTE);
+    enqueueNote(2, Fs4, EIGHTH_NOTE);   // tie start
+
+    // Left hand
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+
+
+    // Measure 37
+
+    // Right hand
+    enqueueNote(2, Fs4, HALF_NOTE);     // tie stop
+    enqueueNote(2, Ds5, HALF_NOTE);
+    enqueueNote(2, Gs4, QUARTER_NOTE);
+    enqueueNote(2, B4, HALF_NOTE);
+    enqueueNote(2, A4, QUARTER_NOTE);
+
+    // Left hand
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, Ds4, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, Ds4, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+
+    // Measure 38
+
+    // Right hand
+    enqueueNote(2, Gs4, HALF_NOTE);
+    enqueueNote(2, Gs4, WHOLE_NOTE);
+    enqueueNote(2, Fs4, QUARTER_NOTE);
+    enqueueNote(2, E4, QUARTER_NOTE);
+
+    // Left hand
+    enqueueNote(0, Cs3, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+    enqueueNote(0, E4, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+
+    enqueueNote(0, Cs3, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+
+
+    // Measure 39
+
+    // Right hand
+    enqueueNote(2, Ds4, QUARTER_NOTE);
+    enqueueNote(2, E4, HALF_NOTE);
+    enqueueNote(2, PAUSE, HALF_NOTE);
+    enqueueNote(2, B4, HALF_NOTE);
+    enqueueNote(2, Ds4, QUARTER_NOTE);
+
+    // Left hand
+    enqueueNote(0, Gs2, EIGHTH_NOTE);
+    enqueueNote(0, Ds3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, Ds3, EIGHTH_NOTE);
+
+    enqueueNote(0, Gs2, EIGHTH_NOTE);
+    enqueueNote(0, Ds3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, Ds3, EIGHTH_NOTE);
+
+
+    // Measure 40
+
+    // Right hand
+    enqueueNote(2, Ds4, QUARTER_NOTE);
+    enqueueNote(2, E4, HALF_NOTE);
+    enqueueNote(2, Fs4, QUARTER_NOTE);
+
+        // Measure 40 (continued)
+
+    // Right hand
+    enqueueNote(2, Cs5, WHOLE_NOTE);
+
+    // Left hand
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, A3, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+
+
+    // Measure 41
+
+    // Right hand
+    enqueueNote(2, Gs4, HALF_NOTE);
+    enqueueNote(2, Fs4, HALF_NOTE);
+
+    enqueueNote(2, PAUSE, HALF_NOTE);
+    enqueueNote(2, PAUSE, QUARTER_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);
+    enqueueNote(2, Fs5, EIGHTH_NOTE);
+
+    // Left hand
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+    enqueueNote(0, E4, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, Ds4, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+
+    // Measure 42
+
+    // Right hand
+    enqueueNote(2, PAUSE, EIGHTH_NOTE);
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);    // tie start
+    enqueueNote(2, E5, EIGHTH_NOTE);    // tie stop
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, E4, QUARTER_NOTE);
+
+    enqueueNote(2, Fs5, EIGHTH_NOTE);
+    enqueueNote(2, Gs5, EIGHTH_NOTE);   // tie start
+    enqueueNote(2, Gs5, HALF_NOTE);     // tie stop
+    enqueueNote(2, A5, SIXTEENTH_NOTE);
+    enqueueNote(2, Gs5, SIXTEENTH_NOTE);
+    enqueueNote(2, Fs5, SIXTEENTH_NOTE);
+    enqueueNote(2, E5, SIXTEENTH_NOTE);
+
+    // Left hand
+    enqueueNote(0, Cs3, EIGHTH_NOTE);
+    enqueueNote(0, Gs3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, HALF_NOTE);
+
+
+    // Measure 43
+
+    // Right hand
+    enqueueNote(2, PAUSE, EIGHTH_NOTE);
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);    // tie start
+    enqueueNote(2, E5, EIGHTH_NOTE);    // tie stop
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, E4, QUARTER_NOTE);
+
+    enqueueNote(2, Fs5, EIGHTH_NOTE);
+    enqueueNote(2, B5, EIGHTH_NOTE);    // tie start
+    enqueueNote(2, B5, HALF_NOTE);      // tie stop
+    enqueueNote(2, Gs5, EIGHTH_NOTE);
+    enqueueNote(2, B5, EIGHTH_NOTE);
+
+    // Left hand
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, HALF_NOTE);
+
+        // Measure 44
+
+    // Right hand
+    enqueueNote(2, PAUSE, EIGHTH_NOTE);
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);      // tie start
+    enqueueNote(2, E5, EIGHTH_NOTE);      // tie stop
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, E4, QUARTER_NOTE);
+
+    // Upper voice
+    enqueueNote(2, B5, WHOLE_NOTE);
+    enqueueNote(2, Cs6, HALF_NOTE);
+    enqueueNote(2, B5, HALF_NOTE);
+
+    // Left hand
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, A3, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, HALF_NOTE);
+
+
+    // Measure 45
+
+    // Right hand
+    enqueueNote(2, PAUSE, EIGHTH_NOTE);
+    enqueueNote(2, B4, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);
+    enqueueNote(2, E5, EIGHTH_NOTE);      // tie start
+    enqueueNote(2, E5, QUARTER_NOTE);     // tie stop
+    enqueueNote(2, Ds5, QUARTER_NOTE);
+
+    enqueueNote(2, Fs5, HALF_NOTE);       // inverted mordent
+
+    // Left hand
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, EIGHTH_NOTE);
+    enqueueNote(0, PAUSE, HALF_NOTE);
+
+
+    // Measure 46
+
+    // Right hand
+    enqueueNote(2, E4, DOTTED_QUARTER_NOTE);
+    enqueueNote(2, E4, EIGHTH_NOTE);
+    enqueueNote(2, E4, QUARTER_NOTE);
+    enqueueNote(2, E4, QUARTER_NOTE);
+
+    // Left hand
+    enqueueNote(0, E2, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+
+
+    // Measure 47
+
+    // Right hand
+    enqueueNote(2, Ds4, QUARTER_NOTE);
+    enqueueNote(2, E4, HALF_NOTE);
+    enqueueNote(2, E4, QUARTER_NOTE);
+
+    // Left hand
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+
+    // Measure 48
+
+    // Right hand
+    enqueueNote(2, Ds4, QUARTER_NOTE);
+    enqueueNote(2, E4, HALF_NOTE);
+    enqueueNote(2, Fs4, QUARTER_NOTE);
+
+    // Left hand
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, Cs4, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+
+    enqueueNote(0, A2, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+    enqueueNote(0, A3, EIGHTH_NOTE);
+    enqueueNote(0, E3, EIGHTH_NOTE);
+
+
+    // Measure 49
+    // Right hand
+    enqueueNote(2, Gs4, HALF_NOTE);
+    enqueueNote(2, Fs4, HALF_NOTE);
+
+    // Left hand
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+
+    enqueueNote(0, B2, EIGHTH_NOTE);
+    enqueueNote(0, Fs3, EIGHTH_NOTE);
+    enqueueNote(0, B3, EIGHTH_NOTE);
+
     end_song();
 }
 
@@ -1659,18 +2048,6 @@ int play_song(void)
             default: printf("Wrong input\n"); break;
         }
     } while (opt != '6');
-    // playNoteMs(C6, 1000);
-    // getchar();
-    // setUseHammer(0);
-    // playNoteMs(C5, 1000);
-    // c_major_chord();
-    // octave();
-    // ode_to_joy();
-    // ode_to_joy1();
-    // ode_to_joy2();
-    // my_heart_will_go_on();
-    // my_heart_will_go_on_low();
-    // hedwigs_theme();
     set_song_mode_active(0);
     deactivateDisplayAllNotes();
     return 0;
