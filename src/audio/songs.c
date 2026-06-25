@@ -1642,27 +1642,26 @@ int play_song(void)
 {
     set_song_mode_active(1);
 
-    printf("\n\n");
-    char opt;
-    do {
-        printf("What do you like to do today?\n\t1] Play c-sequence\n\t2] Play Ode to joy\n\t3] Play Ode to joy - with basses\n\t4] Play My heart will go on\n\t5] Play Hedwigs Theme\n\t6] Main menu\n");
-        scanf(" %c", &opt);
-        emptyAllSchedulers();
-        switch (opt)
-        {
-            case '1': octave(); break;
-            case '2': ode_to_joy(); break;
-            case '3': ode_to_joy2(); break;
-            case '4': my_heart_will_go_on(); break;
-            case '5': hedwigs_theme(); break;
-            case '6': break;
-            default: printf("Wrong input\n"); break;
-        }
-    } while (opt != '6');
-    // playNoteMs(C6, 1000);
+    // printf("\n\n");
+    // char opt;
+    // do {
+    //     printf("What do you like to do today?\n\t1] Play c-sequence\n\t2] Play Ode to joy\n\t3] Play Ode to joy - with basses\n\t4] Play My heart will go on\n\t5] Play Hedwigs Theme\n\t6] Main menu\n");
+    //     scanf(" %c", &opt);
+    //     emptyAllSchedulers();
+    //     switch (opt)
+    //     {
+    //         case '1': octave(); break;
+    //         case '2': ode_to_joy(); break;
+    //         case '3': ode_to_joy2(); break;
+    //         case '4': my_heart_will_go_on(); break;
+    //         case '5': hedwigs_theme(); break;
+    //         case '6': break;
+    //         default: printf("Wrong input\n"); break;
+    //     }
+    // } while (opt != '6');
+    playNoteMs(C4, 3000);
     // getchar();
     // setUseHammer(0);
-    // playNoteMs(C5, 1000);
     // c_major_chord();
     // octave();
     // ode_to_joy();
@@ -1671,7 +1670,9 @@ int play_song(void)
     // my_heart_will_go_on();
     // my_heart_will_go_on_low();
     // hedwigs_theme();
+
+    getchar();
     set_song_mode_active(0);
-    deactivateDisplayAllNotes();
+    // deactivateDisplayAllNotes();
     return 0;
 }
