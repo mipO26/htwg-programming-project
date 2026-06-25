@@ -19,27 +19,33 @@ int main(void)
     /*==================================================
     * APP
     *==================================================*/
-    printf("SONATE IN C-CODE\n");
+    printf("\n\n\n\n\n");
+    printf("┏━━━━━━━━━━━━━━━━━━┓\n");
+    printf("┃ 𝗦𝗢𝗡𝗔𝗧𝗘 𝗜𝗡 𝗖-𝗖𝗢𝗗𝗘 ┃\n");
+    printf("┗━━━━━━━━━━━━━━━━━━┛\n");
+    printf("\n");
     ui();
-    printf("\n\nWhat would you want to do today?");
-    printf("\na) play a song\nb)play a chord");
-    int opt;
+    printf("\n\n");
+    char opt;
     do {
-        printf("What do you want to do?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3]exit\n");
-        scanf("%i", &opt);
-        flushInputBuffer();
+        printf("What do you like to do today?\n\t1] Play predefined song\n\t2] Play custom chord\n\t3] Exit...\n");
+        scanf(" %c", &opt);
         emptyAllSchedulers();
         switch (opt)
         {
-            case 1: play_song(); break;
-            case 2: keyboard(); break;
+            case '1': play_song(); break;
+            case '2': keyboard(); break;
+            case '3': break;
+            default: printf("Wrong input\n"); break;
         }
-    } while (opt != 3);
+    } while (opt != '3');
     
     /*==================================================
     * TERMINATION
     *==================================================*/
     audio_terminate(device);
+
+    printf("\nBye...\n");
 
     return 0;
 }

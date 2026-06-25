@@ -6,6 +6,19 @@
 
 static int song_mode_active = 0;
 
+
+void end_song()
+{
+    while (!isSongFinished())
+    {
+        // renderUi();
+        renderUiFullKeyboard();
+        sleep_ms(10);
+    }
+    renderUiFullKeyboard();
+    sleep_ms(500);
+}
+
 int get_song_mode_active()
 {
     return song_mode_active;
@@ -27,6 +40,8 @@ void octave(void)
     enqueueNote(0, A4, QUARTER_NOTE);
     enqueueNote(0, B4, QUARTER_NOTE);
     enqueueNote(0, C5, QUARTER_NOTE);
+
+    end_song();
 }
 
 void ode_to_joy(void)
@@ -71,6 +86,8 @@ void ode_to_joy(void)
     enqueueNote(1, D4, DOTTED_QUARTER_NOTE);
     enqueueNote(1, C4, EIGHTH_NOTE);
     enqueueNote(1, C4, HALF_NOTE);
+
+    end_song();
 }
 void ode_to_joy1(void)
 {
@@ -130,6 +147,8 @@ void ode_to_joy1(void)
     enqueueNote(1, D4, DOTTED_QUARTER_NOTE);
     enqueueNote(1, C4, EIGHTH_NOTE);
     enqueueNote(1, C4, HALF_NOTE);
+
+    end_song();
 }
 
 void ode_to_joy2()
@@ -269,6 +288,7 @@ void ode_to_joy2()
     enqueueNote(0, G2, HALF_NOTE);
     enqueueNote(1, PAUSE, WHOLE_NOTE);
 
+    end_song();
 }
 
 void my_heart_will_go_on()
@@ -920,6 +940,8 @@ void my_heart_will_go_on()
     enqueueNote(0, B2, EIGHTH_NOTE);
     enqueueNote(0, Fs3, EIGHTH_NOTE);
     enqueueNote(0, B3, EIGHTH_NOTE);
+
+    end_song();
 }
 
 void hedwigs_theme(void)
@@ -958,6 +980,8 @@ void hedwigs_theme(void)
     enqueueNote(0, A4, HALF_NOTE);
     enqueueNote(0, A4, HALF_NOTE);
     enqueueNote(0, C5, QUARTER_NOTE);
+
+    end_song();
 
 }
 
@@ -1610,11 +1634,31 @@ void my_heart_will_go_on_low()
     enqueueNote(0, B1, EIGHTH_NOTE);
     enqueueNote(0, Fs2, EIGHTH_NOTE);
     enqueueNote(0, B2, EIGHTH_NOTE);
+
+    end_song();
 }
 
 int play_song(void)
 {
     set_song_mode_active(1);
+
+    printf("\n\n");
+    char opt;
+    do {
+        printf("What do you like to do today?\n\t1] Play c-sequence\n\t2] Play Ode to joy\n\t3] Play Ode to joy - with basses\n\t4] Play My heart will go on\n\t5] Play Hedwigs Theme\n\t6] Main menu\n");
+        scanf(" %c", &opt);
+        emptyAllSchedulers();
+        switch (opt)
+        {
+            case '1': octave(); break;
+            case '2': ode_to_joy(); break;
+            case '3': ode_to_joy2(); break;
+            case '4': my_heart_will_go_on(); break;
+            case '5': hedwigs_theme(); break;
+            case '6': break;
+            default: printf("Wrong input\n"); break;
+        }
+    } while (opt != '6');
     // playNoteMs(C6, 1000);
     // getchar();
     // setUseHammer(0);
@@ -1623,19 +1667,10 @@ int play_song(void)
     // octave();
     // ode_to_joy();
     // ode_to_joy1();
-    ode_to_joy2();
+    // ode_to_joy2();
     // my_heart_will_go_on();
     // my_heart_will_go_on_low();
     // hedwigs_theme();
-
-    while (!isSongFinished())
-    {
-        // renderUi();
-        renderUiFullKeyboard();
-        sleep_ms(10);
-    }
-    renderUiFullKeyboard();
-    sleep_ms(500);
     set_song_mode_active(0);
     deactivateDisplayAllNotes();
     return 0;
