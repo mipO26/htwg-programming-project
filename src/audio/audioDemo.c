@@ -68,9 +68,9 @@ void soundImprovementDemo()
     sleep_ms(500);
     wait_for_user();
     
-    write_printf("First, let's see some simple C3 note...\n");
+    write_printf("First, let's see some simple C4 note...\n");
     wait_for_user();
-    playNoteMs(C3, 1000);
+    playNoteMs(C4, 1000);
     sleep_ms(1000);
     wait_for_user();
 
@@ -81,12 +81,12 @@ void soundImprovementDemo()
 
     write_printf("Well, the sound is still a bit too artificial. What if we add some harmonies. First the original sound:\n");
     wait_for_user();
-    playNoteMs(C3, 1000);
+    playNoteMs(C4, 1000);
     sleep_ms(1200);
     write_printf("And now with the harmonies:\n");
     wait_for_user();
     ENABLE_HARMONIES = 1;
-    playNoteMs(C3, 1000);
+    playNoteMs(C4, 1000);
     sleep_ms(1000);
     wait_for_user();
 
@@ -97,7 +97,7 @@ void soundImprovementDemo()
     write_printf("Let's see how it sounds\n");
     wait_for_user();
     ENABLE_ENVELOPE = 1;
-    playNoteMs(C3, 1000);
+    playNoteMs(C4, 4000);
     wait_for_user();
 
     write_printf("Wow, making progres... But something is still missing...\n");
@@ -106,7 +106,7 @@ void soundImprovementDemo()
     wait_for_user();
     ENABLE_DELAY=1;
     ENABLE_HAMMER = 1;
-    playNoteMs(C3, 1000);
+    playNoteMs(C4, 4000);
     sleep_ms(1000);
     wait_for_user();
 
