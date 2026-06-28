@@ -10,6 +10,7 @@ Before building Musicify, make sure SDL2 is installed on your system.
 sudo apt install libsdl2-dev
 ```
 
+
 ### macOS
 
 ```bash

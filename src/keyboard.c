@@ -3,16 +3,25 @@
 #include "audio/notes.h"
 #include "ui/ui_active.h"
 
+
+//---------------------------------------------------------------
+// Removes all trailing input from user
+//---------------------------------------------------------------
 void flushInputBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {}
 }
 
+//---------------------------------------------------------------
+// Gets a single character input from user
+//---------------------------------------------------------------
 void getUserInputChar(char *input) {
-    // flushInputBuffer(); // Clear the input buffer
     scanf(" %c", input);
 }
 
+// --------------------------------------------------------------
+// Keyboard function to allow user to select three notes for a bass chord
+// --------------------------------------------------------------
 void keyboard(void)
 {
     char bassInput1;
@@ -22,6 +31,8 @@ void keyboard(void)
     Note bassNote2; //middle note
     Note bassNote3; //high note
     char yesNo = 'n' ; //yes or no
+
+    // Display the keyboard layout
     printf("--------------------------------\n");
     printf("q = C4\n");
     printf("w = C#4\n");
@@ -47,7 +58,10 @@ void keyboard(void)
     printf("\n^^^ Table of which keys corresponds to which notes ^^^\n");
     printf("Enter your bass chord\n");
     printf("Use the following keys to select your notes:\n");
+
+    // Loop to get user input for three notes and validate the input
     do {
+        // First note input
         printf("\nEnter bottom note = ");
         getUserInputChar(&bassInput1);
         switch (bassInput1) {
@@ -77,7 +91,7 @@ void keyboard(void)
         setNoteDisplayActive(bassNote1);
         renderUi();
         
-
+        // Second note input
         printf("\nEnter middle note = ");
         getUserInputChar(&bassInput2);
 
@@ -107,6 +121,7 @@ void keyboard(void)
         setNoteDisplayActive(bassNote2);
         renderUi();
 
+        // Third note input
         printf("\nEnter top note = ");
         getUserInputChar(&bassInput3);
         switch (bassInput3) {
@@ -132,8 +147,12 @@ void keyboard(void)
             case 'z': bassNote3 = G5; break;
             default: printf("You have entered an invalid note. Please re-enter.\n"); continue; break;
         }
+
+        // Display the selected notes on the UI
         setNoteDisplayActive(bassNote3);
         renderUi();
+
+        // Check for duplicate notes and confirm selection
         if (bassInput1 == bassInput2 && bassInput2 == bassInput3) {
             printf("You have entered the same notes three times.\n");
             deactivateDisplayAllNotes();
@@ -149,8 +168,9 @@ void keyboard(void)
             getUserInputChar(&yesNo);
         }
 
-    } while (yesNo != 'y'); //        cmake --build build && ./build/Musicify         to run program
+    } while (yesNo != 'y');
 
+    // Play the selected notes for 5 seconds each
     playNoteMs(bassNote1, 5 * 1000);
     playNoteMs(bassNote2, 5 * 1000);
     playNoteMs(bassNote3, 5 * 1000);
