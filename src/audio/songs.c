@@ -2027,6 +2027,11 @@ void my_heart_will_go_on_low()
     end_song();
 }
 
+/**
+ * @brief Play a song from the menu
+ * 
+ * @return int 0 if successful
+ */
 int play_song(void)
 {
     set_song_mode_active(1);

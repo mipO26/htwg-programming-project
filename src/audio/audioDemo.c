@@ -4,7 +4,16 @@
 #include "audioConfig.h"
 #include "keyboard.h"
 #include "timing.h"
+#include <stdio.h>
 
+/**
+ * Prints a string to the standard output with a typewriter effect.
+ *
+ * Each character is written immediately, followed by a short delay,
+ * producing an animated text output.
+ *
+ * @param text Null-terminated string to print.
+ */
 void write_printf(const char *text)
 {
     while (*text)
@@ -16,8 +25,12 @@ void write_printf(const char *text)
     }
 }
 
-#include <stdio.h>
-
+/**
+ * Prints the Harmony welcome banner.
+ *
+ * Displays the application's ASCII art logo and introductory message
+ * on the standard output.
+ */
 void print_harmony(void) {
     printf(
 "\n"
@@ -46,6 +59,9 @@ void print_harmony(void) {
     );
 }
 
+/**
+ * Waits for the user to press a key before continuing.
+ */
 void wait_for_user()
 {
     // flushInputBuffer();
@@ -53,6 +69,10 @@ void wait_for_user()
     getchar();
 }
 
+/**
+ * Interactive demo showcasing sound synthesis features.
+ * Shows how different audio effects and techniques can be applied to create realistic musical sounds.
+ */
 void soundImprovementDemo()
 {
     ENABLE_DELAY=0;
@@ -126,12 +146,5 @@ void soundImprovementDemo()
     write_printf("Have fun!\n");
     wait_for_user();
 
-
-    // octave();
-    // ode_to_joy1();
-    // ode_to_joy2();
-    // my_heart_will_go_on();
-    // my_heart_will_go_on_low();
-    // hedwigs_theme();
     SHOW_KEYBOARD = 1;
 }

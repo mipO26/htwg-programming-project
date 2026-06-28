@@ -73,9 +73,11 @@ typedef struct {
 
 Oscillator notes[NOTE_COUNT];
 
-//---------------------------------------------------------------
-// Initializes oscilator for all the Notes
-//---------------------------------------------------------------
+/**
+ * Initializes the notes array with default values for each note's oscillator.
+ * Sets the frequency, amplitude, and timing parameters for each note.
+ * The amplitude is adjusted based on the frequency to ensure lower frequencies are louder.
+ */
 void init_notes(void)
 {
     for (int i = 0; i < NOTE_COUNT; i++) {
@@ -93,12 +95,19 @@ void init_notes(void)
     }
 }
 
-//---------------------------------------------------------------
-// Simulates the non-constant volume of piano string
-// When the hammer hits the string, the volume is at its peak
-// Then it is kept at the sustain level with slow decrease.
-// When the key is released it dissolves quicker
-//---------------------------------------------------------------
+/**
+ * Computes the current amplitude envelope for an oscillator.
+ *
+ * The envelope consists of:
+ * - a short attack to simulate the initial hammer strike,
+ * - a natural exponential decay while the note is held,
+ * - a linear fade-out during the release phase.
+ *
+ * If envelopes are disabled, the function returns a constant gain of 1.0.
+ *
+ * @param note Oscillator whose envelope is evaluated.
+ * @return Current amplitude multiplier in the range [0, 1].
+ */
 float envelope(Oscillator note)
 {
     if (!ENABLE_ENVELOPE)
@@ -127,9 +136,15 @@ float envelope(Oscillator note)
     return env;
 }
 
-//---------------------------------------------------------------
-// Simulates the noice of hammer hitting the string
-//---------------------------------------------------------------
+/**
+ * Computes the hammer-strike transient for an oscillator.
+ *
+ * Generates a short, high-frequency burst at note onset to simulate
+ * the sound of a piano hammer striking the string.
+ *
+ * @param note Oscillator whose hammer transient is evaluated.
+ * @return Transient sample to be added to the oscillator output.
+ */
 float hammer(Oscillator note)
 {
 
@@ -143,9 +158,15 @@ float hammer(Oscillator note)
            expf(-7000.0f * t);
 }
 
-//---------------------------------------------------------------
-// Introduces slow decay
-//---------------------------------------------------------------
+/**
+ * Returns expf(x) when delay effects are enabled.
+ *
+ * Otherwise returns 1.0f, effectively disabling exponential
+ * attenuation without requiring conditional code at call sites.
+ *
+ * @param x Exponent passed to expf().
+ * @return expf(x) if delay is enabled; otherwise 1.0f.
+ */
 float get_expf(float x)
 {
     if (ENABLE_DELAY)
@@ -155,23 +176,49 @@ float get_expf(float x)
     return 1;
 }
 
+/**
+ * Clamps a value to the specified range.
+ *
+ * @param x Value to clamp.
+ * @param lo Lower bound (inclusive).
+ * @param hi Upper bound (inclusive).
+ * @return x clamped to the range [lo, hi].
+ */
 static inline float clampf(float x, float lo, float hi)
 {
     return x < lo ? lo : (x > hi ? hi : x);
 }
 
-//---------------------------------------------------------------
-// Normalizes number between two ranges
-//---------------------------------------------------------------
+/**
+ * Performs smooth Hermite interpolation between two edges.
+ *
+ * Returns 0 for x <= edge0, 1 for x >= edge1, and a smooth
+ * transition between these values.
+ *
+ * @param edge0 Lower edge of the transition.
+ * @param edge1 Upper edge of the transition.
+ * @param x Input value to interpolate.
+ * @return Interpolated value in the range [0, 1].
+ */
 static inline float smoothstep(float edge0, float edge1, float x)
 {
     x = clampf((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
     return x * x * (3.0f - 2.0f * x);
 }
 
-//---------------------------------------------------------------
-// Normalizes
-//---------------------------------------------------------------
+/**
+ * Computes the oscillator waveform for a note.
+ *
+ * By default, the waveform is a pure sine wave. When harmonic synthesis
+ * is enabled, additional harmonics with slight inharmonicity and
+ * exponentially decaying amplitudes are added to approximate the timbre
+ * of a piano string.
+ *
+ * @param p Current oscillator phase, in radians.
+ * @param t Time since the note started, in seconds.
+ * @param freq Fundamental frequency of the note, in hertz.
+ * @return Oscillator sample for the current phase.
+ */
 float get_osc(float p, float t, float freq)
 {
     float osc = 1.0f * sin(p);
@@ -201,6 +248,22 @@ float get_osc(float p, float t, float freq)
     return osc;
 }
 
+/**
+ * SDL audio callback.
+ *
+ * Generates a block of audio samples by updating all active oscillators,
+ * applying their envelopes and hammer transients, mixing the result,
+ * optionally applying a feedback delay effect, and writing the samples
+ * to the output buffer.
+ * 
+ * Also calls handlers to update the UI to highlight active notes when in song mode.
+ * 
+ * Calls runSchedulers() to update the state of any scheduled notes before generating samples.
+ *
+ * @param userdata User-defined data pointer (unused).
+ * @param stream Output buffer to receive floating-point audio samples.
+ * @param len Size of the output buffer in bytes.
+ */
 void audio_callback(void *userdata, Uint8 *stream, int len)
 {
     
@@ -208,7 +271,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
     float *buffer = (float *)stream;
     int samples = len / sizeof(float);
     
-    // collect samples
+    // Generate each output sample.
     for (int i = 0; i < samples; i++) {
         runSchedulers();
         if (get_song_mode_active())
@@ -217,6 +280,7 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
         }
         int active_count = 0;
         float sample = 0.0f;
+        // Mix all currently active notes.
         for (int j = 0; j < NOTE_COUNT; j++) {
             if (notes[j].end_time == 0 && !notes[j].releasing)
                 continue;
@@ -255,6 +319,8 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
             }
             active_count++;
         }
+
+        // Normalize the mix to reduce clipping as more notes are played.
         if (active_count > 0)
             sample /= sqrtf(active_count);
         
@@ -273,15 +339,24 @@ void audio_callback(void *userdata, Uint8 *stream, int len)
             if (delay_pos >= DELAY_SAMPLES)
                 delay_pos = 0;
 
+            // Soft-clip the output to limit peaks.
             buffer[i] = tanhf(out);
-        }
-        else {
+        } else {
+            // Soft-clip the output to limit peaks.
             buffer[i] = tanhf(sample);
         }
 
     }
 }
 
+/**
+ * Initializes the audio subsystem and starts audio playback.
+ *
+ * Initializes the note table, scheduler, and SDL audio subsystem,
+ * opens the default output device, and begins audio playback.
+ *
+ * @return Audio device handle on success, or 0 if initialization fails.
+ */
 SDL_AudioDeviceID audio_init()
 {
     SDL_SetMainReady();
@@ -310,12 +385,26 @@ SDL_AudioDeviceID audio_init()
     return device;
 }
 
+/**
+ * Shuts down the audio subsystem.
+ *
+ * Closes the specified SDL audio device and releases all SDL resources
+ * initialized by audio_init().
+ *
+ * @param device Audio device handle returned by audio_init().
+ */
 void audio_terminate(SDL_AudioDeviceID device)
 {
     SDL_CloseAudioDevice(device);
     SDL_Quit();
 }
 
+/**
+ * Plays a note for the specified duration defined in audio/notes.h.
+ *
+ * @param note The note to play.
+ * @param duration The duration to play the note for.
+ */
 void playNote(Note note, double duration)
 {
     notes[note].releasing = false;
@@ -324,6 +413,12 @@ void playNote(Note note, double duration)
     notes[note].end_time = add_time_note(0, duration);
 }
 
+/**
+ * Plays a note for the specified duration in milliseconds.
+ *
+ * @param note The note to play.
+ * @param duration_ms The duration to play the note for in milliseconds.
+ */
 void playNoteMs(Note note, uint32_t duration_ms)
 {
     // notes[note].phase = 0.0;
@@ -331,6 +426,11 @@ void playNoteMs(Note note, uint32_t duration_ms)
     notes[note].end_time = add_time_ms(notes[note].end_time, duration_ms);
 }
 
+/**
+ * Stops playing the specified note.
+ *
+ * @param note The note to stop.
+ */
 void stopNote(Note note)
 {
     notes[note].end_time = 0;
